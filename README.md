@@ -1,80 +1,33 @@
-# Seven Perfume Commerce — Test Storefront
+# Seven Perfume V9.3
 
-This is a standalone ecommerce prototype for Seven Perfume.
+This is the cleaned project package for the Seven Perfume test storefront. It continues the existing V8/V9 project and does not include old version ZIPs.
 
-## Current test features
+## V9.3 changes
+- Switched display typography to heavier Manrope sans-serif for readability on the ivory/white design.
+- Added one consistent, delegated navigation handler so page links and CTAs route in the same tab. Browser back/forward is supported.
+- Product image click opens an in-page gallery with three temporary views and a fast zoom transition. Replace the placeholder bottle renderings with official product photos when available.
+- “VIEW DETAILS” opens the selected fragrance's detailed product page in the same tab. The product name is no longer a second navigation button.
+- Favorites toggle in place without rebuilding the product grid.
+- Add to Cart keeps the shopper's page position stable while opening the cart drawer.
+- Cart bottle thumbnails are contained in fixed-size boxes so they cannot overlap cart text or neighboring rows.
+- View Details now uses the same centralized route handler as the other navigation controls and the destination renders immediately before the page-entry animation.
+- Instagram and Facebook icons are included in every standard page footer and link to the official URLs supplied for Seven Perfume.
 
-- 13 fragrance products
-- 10mL / ₱120
-- 30mL / ₱350
-- 50mL / ₱600
-- Search
-- Men / Women filters
-- Favorites
-- Quick view
-- Size selection
-- Cart
-- Quantity controls
-- Nationwide test shipping
-- J&T Express test rates
-- LBC Express test rates
-- Address-based shipping calculation
-- Test checkout
-- Test order creation
-- Test admin page
+## Run locally (Windows)
+1. Install Node.js LTS if needed.
+2. Double-click `run.bat`.
+3. Open the local URL printed by the terminal.
 
-## Visual placeholders
+## Cloudflare deployment
+- Worker name: `pitotesting` (`wrangler.jsonc`).
+- From this project folder, run `npm install`, authenticate with `npx wrangler login`, and deploy with `npx wrangler deploy`.
+- Membership registration requires a real Cloudflare D1 database binding named `DB` and the schema in `migrations/0001_v9_membership.sql`. See `DEPLOYMENT.md`.
 
-The product photos have not been supplied yet, so the storefront uses intentional editorial perfume-bottle illustrations instead of blank image boxes. They are designed to look like part of the brand presentation and can later be replaced by the CEO's actual product photography without changing the shopping logic.
-
-## Typography
-
-The storefront currently uses:
-
-- Cormorant Garamond for the display / product typography
-- Manrope for interface and body text
-
-The display face is elegant and slightly italic/calligraphic without becoming difficult to read. It can be replaced later once Seven Perfume's exact brand fonts are confirmed.
-
-## Test mode
-
-Shipping and payment are simulated. The rates are development assumptions, not official courier quotations.
-
-Run locally with:
-
-```text
-run.bat
-```
-
-Then open:
-
-```text
-http://localhost:4173
-```
-
-Admin:
-
-```text
-http://localhost:4173/admin.html
-```
-
-V4 POLISH
----------
-The storefront has been visually refined without changing the commerce logic:
-- Bodoni Moda + Manrope typography
-- softer button hover/press behavior
-- larger touch targets
-- improved input/select focus states
-- gentler card motion
-- refined spacing and hierarchy
-- improved mobile toolbar and one-column behavior
-- reduced-motion accessibility support
-
-CLOUDFLARE
-----------
-This V6.1 package also contains:
-- `wrangler.jsonc` for Cloudflare Workers + Static Assets
-- `src/index.js` for a TEST `/api/orders` backend
-- `CLOUDFLARE-SETUP.md` for deployment values
-
-The Cloudflare order backend is deliberately TEST MODE and stores orders only in Worker memory. Before any real sales, replace this with D1/database persistence, admin authentication, and PayMongo verification.
+## Demo limitations
+- This remains a test-mode order flow. No real money is charged.
+- Shipping rates are placeholders; no LBC/J&T API is connected.
+- PayMongo and verified payment webhooks are not connected.
+- Seven Privé account registration requires the real D1 binding.
+- Configure `ADMIN_TOKEN` as a secret; never put production credentials in frontend files or commit them.
+- Catalog data, scent descriptions, and the temporary gallery visuals should be confirmed/replaced with official brand assets before launch.
+- Visual browser testing could not be completed in this environment; verify the package on a real browser/phone after local run or deployment.
