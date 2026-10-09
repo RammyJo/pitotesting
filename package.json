@@ -1,11 +1,12 @@
 {
   "name": "seven-perfume",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy"
   },
   "devDependencies": {
-    "wrangler": "latest"
+    "wrangler": "4.148.0"
   }
 }
