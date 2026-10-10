@@ -1,33 +1,68 @@
-# Seven Perfume V9.3
+# Seven Perfume — Page-flow storefront (test project)
 
-This is the cleaned project package for the Seven Perfume test storefront. It continues the existing V8/V9 project and does not include old version ZIPs.
+This is the complete local development project for the Seven Perfume storefront. The storefront now uses page-based navigation: clicking Shop, a fragrance, Scent Finder, Our Story, Cart, or Checkout opens a distinct page view instead of jumping down a long homepage.
 
-## V9.3 changes
-- Switched display typography to heavier Manrope sans-serif for readability on the ivory/white design.
-- Added one consistent, delegated navigation handler so page links and CTAs route in the same tab. Browser back/forward is supported.
-- Product image click opens an in-page gallery with three temporary views and a fast zoom transition. Replace the placeholder bottle renderings with official product photos when available.
-- “VIEW DETAILS” opens the selected fragrance's detailed product page in the same tab. The product name is no longer a second navigation button.
-- Favorites toggle in place without rebuilding the product grid.
-- Add to Cart keeps the shopper's page position stable while opening the cart drawer.
-- Cart bottle thumbnails are contained in fixed-size boxes so they cannot overlap cart text or neighboring rows.
-- View Details now uses the same centralized route handler as the other navigation controls and the destination renders immediately before the page-entry animation.
-- Instagram and Facebook icons are included in every standard page footer and link to the official URLs supplied for Seven Perfume.
+## Run locally
 
-## Run locally (Windows)
-1. Install Node.js LTS if needed.
-2. Double-click `run.bat`.
-3. Open the local URL printed by the terminal.
+1. Extract the ZIP.
+2. Open the extracted `seven-perfume-commerce-amazon-ui` folder.
+3. Double-click `run.bat` (Node.js must be installed).
+4. Open `http://localhost:4173` in your browser.
 
-## Cloudflare deployment
-- Worker name: `pitotesting` (`wrangler.jsonc`).
-- From this project folder, run `npm install`, authenticate with `npx wrangler login`, and deploy with `npx wrangler deploy`.
-- Membership registration requires a real Cloudflare D1 database binding named `DB` and the schema in `migrations/0001_v9_membership.sql`. See `DEPLOYMENT.md`.
+## Page navigation and working interactions
 
-## Demo limitations
-- This remains a test-mode order flow. No real money is charged.
-- Shipping rates are placeholders; no LBC/J&T API is connected.
-- PayMongo and verified payment webhooks are not connected.
-- Seven Privé account registration requires the real D1 binding.
-- Configure `ADMIN_TOKEN` as a secret; never put production credentials in frontend files or commit them.
-- Catalog data, scent descriptions, and the temporary gallery visuals should be confirmed/replaced with official brand assets before launch.
-- Visual browser testing could not be completed in this environment; verify the package on a real browser/phone after local run or deployment.
+- Home, Shop, For Him, For Her, Saved Fragrances, Scent Finder, Our Story, Cart, Checkout, and Order Confirmation are separate client-side page routes.
+- Browser Back and Forward return to the prior page/question.
+- Header search opens a search-results page when submitted.
+- Product cards open individual fragrance detail pages.
+- Bottle size selection updates price; quantity, Add to Cart, and Buy Now work.
+- Favorites are saved in the browser and shown on the Saved Fragrances page.
+- The cart persists across refreshes and supports quantity changes and removal.
+- Checkout validates delivery fields, lets customers choose J&T or LBC, and submits a test order to the backend.
+- Test orders use backend-calculated prices and shipping. A successful test order opens a dedicated confirmation page.
+- Mobile navigation includes Home, Shop, Scent Finder, and Cart; the product catalog uses two columns on common phone widths.
+- Soft page transitions and bottle/card motions respect the user's reduced-motion preference.
+
+## Interface polish pass
+
+The latest interface update adds a more guided, editorial shopping experience without changing the page-based route model:
+
+- Featured fragrances, For Him, For Her, and related products now use side-scrolling product shelves with snap points, swipe/trackpad scrolling, arrow controls, and keyboard arrow-key support.
+- The homepage now has a featured campaign banner and two editorial promotional cards that lead to actual product/category/finder pages. They do not claim discounts or pretend to be third-party ads.
+- Selected homepage sections reveal gently as the shopper reaches them; reduced-motion settings disable the decorative animations.
+- Mobile touch targets have been enlarged, the bottom navigation receives extra safe-area space, and product shelves show a partial next card to make horizontal browsing discoverable.
+- Saving a fragrance now updates the heart and saved state without rebuilding the whole page; this keeps the currently selected bottle size and quantity intact.
+- Search text now reflects the active page, so an old search does not remain in the header after leaving search results.
+- Product cards say “3 bottle sizes” rather than implying live stock availability, because real inventory is not connected.
+- Removed an unused price-sort branch whose comparator always returned zero. It was not exposed as a customer-facing option.
+
+See `INTERFACE-AUDIT-AND-CHANGES.md` for the full bug and UX change list.
+
+## Important: test mode only
+
+- Orders and payment status are simulated. No real payment is taken.
+- LBC/J&T rates are assumed development estimates, not official quotations or a live courier integration.
+- The product descriptions and illustrated bottles are placeholders until the brand provides verified product details and photography.
+- The admin API is protected. Do not remove authentication to make the admin page easier to access.
+- This ZIP is for local testing and development. It has **not** been deployed to the live Cloudflare URL.
+
+## Project files
+
+- `public/index.html`, `public/style.css`, `public/app.js` — storefront and page-flow interface
+- `public/admin.html`, `public/admin.js` — test admin page
+- `server.js`, `src/catalog.js`, `src/order.js` — local test server, product catalog, order validation
+- `wrangler.jsonc`, `package.json` — Cloudflare Worker configuration and development dependency
+- `data/orders.json` — sample test order data
+
+## Routes to try
+
+- `#/home`
+- `#/shop?gender=all`
+- `#/shop?gender=men`
+- `#/shop?gender=women`
+- `#/product/alpha` (also `omega`, `boaz`, `exodus-noir`, `pacific`, `invincible`, `caelum`, `gourmand`, `solace`, `hadar`, `darling`, `asmira`, `elan`)
+- `#/favorites`
+- `#/finder`
+- `#/about`
+- `#/cart`
+- `#/checkout`

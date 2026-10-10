@@ -88,9 +88,8 @@ const server = http.createServer(async (req, res) => {
 
     if (url.pathname.startsWith('/api/')) {
       if (!sameOrigin(req)) return sendJson(res, 403, { error: 'Cross-origin request denied.' });
-      if (url.pathname === '/api/health' && req.method === 'GET') return sendJson(res, 200, { ok: true, mode: 'TEST', service: 'pitotesting' });
+      if (url.pathname === '/api/health' && req.method === 'GET') return sendJson(res, 200, { ok: true, mode: 'TEST', service: 'seven-perfume' });
       if (url.pathname === '/api/catalog' && req.method === 'GET') return sendJson(res, 200, { products: PRODUCTS, sizes: SIZES, regionZone: REGION_ZONE, rates: RATES, packagingWeight: PACKAGING_WEIGHT, testMode: true });
-      if (url.pathname.startsWith('/api/account/')) return sendJson(res, 503, { error: 'Member accounts need the Cloudflare D1 binding. Follow V9-IMPLEMENTATION.md and use Wrangler to test account registration.' });
 
       if (url.pathname === '/api/orders' && req.method === 'GET') {
         if (rateLimited(adminWindow, ip, 8)) return sendJson(res, 429, { error: 'Too many admin attempts. Please wait a moment.' });

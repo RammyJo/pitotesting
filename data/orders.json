@@ -1,1 +1,41 @@
-[]
+[
+  {
+    "id": "SP-D1D6E4E20F",
+    "createdAt": "2026-10-10T04:07:18.128Z",
+    "paymentStatus": "TEST_PAID",
+    "orderStatus": "PROCESSING",
+    "customer": {
+      "name": "Test Person",
+      "email": "test@example.com",
+      "phone": "09171234567",
+      "region": "Ilocos Region",
+      "province": "La Union",
+      "city": "San Fernando",
+      "barangay": "Test Barangay",
+      "address": "123 Test Street",
+      "zipCode": "2500"
+    },
+    "items": [
+      {
+        "productId": "omega",
+        "name": "OMEGA 30mL",
+        "sizeId": "30",
+        "size": "30mL",
+        "quantity": 1,
+        "price": 350,
+        "weight": 0.17
+      }
+    ],
+    "subtotal": 350,
+    "shipping": {
+      "courier": "JNT",
+      "fee": 100,
+      "weight": 0.27,
+      "zone": "Luzon",
+      "mode": "TEST_ASSUMED"
+    },
+    "total": 450,
+    "currency": "PHP",
+    "mode": "TEST"
+  }
+]
