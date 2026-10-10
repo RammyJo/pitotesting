@@ -1,0 +1,133 @@
+/* Seven Perfume — additive interface polish for the existing V9.3 storefront.
+   This file intentionally layers over style.css and does not replace it. */
+:root{
+  --polish-olive:#30382c;
+  --polish-olive-2:#424c3b;
+  --polish-gold:#c3ab7e;
+  --polish-cream:#ece8dc;
+}
+
+/* Campaign placement: an editorial brand promotion, not a fake third-party ad. */
+.polishCampaign{
+  position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1.12fr) minmax(260px,.88fr);
+  align-items:center;gap:24px;min-height:300px;overflow:hidden;margin:18px auto 10px;padding:48px clamp(22px,5vw,64px);
+  border:1px solid rgba(195,171,126,.23);background:
+    radial-gradient(circle at 79% 47%,rgba(195,171,126,.18),transparent 17rem),
+    linear-gradient(118deg,#151813,#24291f 57%,#171a15);color:#f6f1e8;
+}
+.polishCampaign:before,.polishCampaign:after{content:"";position:absolute;z-index:-1;pointer-events:none;border:1px solid rgba(223,201,162,.13);border-radius:50%}
+.polishCampaign:before{width:370px;height:370px;right:5%;top:-130px;animation:polishOrbit 42s linear infinite}
+.polishCampaign:after{width:270px;height:270px;right:9%;top:-80px;animation:polishOrbit 35s linear infinite reverse}
+.polishCampaignCopy{position:relative;z-index:2;max-width:600px}
+.polishEyebrow{display:flex;align-items:center;gap:10px;color:#ddcba8;font-size:8px;font-weight:800;letter-spacing:.2em;text-transform:uppercase}
+.polishEyebrow:before{content:"";width:25px;height:1px;background:var(--polish-gold)}
+.polishCampaign h2{margin:17px 0 15px;color:#f9f5ec;font:500 clamp(2.5rem,5vw,4.7rem)/.97 var(--display,Georgia,serif);letter-spacing:-.045em}
+.polishCampaign h2 em{font-weight:500;color:#cfbb94}
+.polishCampaign p{max-width:440px;margin:0;color:#c0bfb3;font-size:12px;line-height:1.9}
+.polishCampaignActions{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:24px}
+.polishCampaignActions .gold{min-height:44px}
+.polishCampaignActions .polishTextAction{min-height:42px;padding:0 8px;border:0;border-bottom:1px solid rgba(223,201,162,.55);background:transparent;color:#eee2c9;font-size:10px;font-weight:700;letter-spacing:.04em;transition:gap .25s ease,color .25s ease}
+.polishCampaignActions .polishTextAction:hover{color:#fff;transform:translateY(-1px)}
+.polishCampaignArt{position:relative;display:grid;place-items:center;min-height:220px;perspective:700px}
+.polishCampaignGlow{position:absolute;width:min(100%,320px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(200,177,135,.2),rgba(200,177,135,.04) 55%,transparent 70%);animation:polishBreathe 7s ease-in-out infinite}
+.polishBottle{position:relative;width:103px;height:154px;z-index:2;transform:rotate(-7deg);animation:polishBottleFloat 6s ease-in-out infinite;filter:drop-shadow(0 28px 18px rgba(0,0,0,.32))}
+.polishBottleCap{position:absolute;z-index:3;left:31px;top:-24px;width:41px;height:28px;border:1px solid #777667;border-radius:4px 4px 1px 1px;background:linear-gradient(90deg,#242720,#777869 48%,#292c24)}
+.polishBottleGlass{position:absolute;inset:0;border:1px solid rgba(241,231,208,.75);border-radius:9px 9px 15px 15px;background:linear-gradient(100deg,rgba(255,255,255,.32),transparent 24%,rgba(191,171,132,.4) 51%,transparent 76%,rgba(0,0,0,.2)),linear-gradient(#918d78,#dbd0b5 50%,#737260);box-shadow:inset 0 0 0 5px rgba(255,255,255,.08),inset 7px 0 12px rgba(255,255,255,.13)}
+.polishBottleLabel{position:absolute;z-index:4;left:9px;right:9px;top:53px;height:49px;display:flex;align-items:center;justify-content:center;flex-direction:column;border:1px solid rgba(54,56,43,.45);background:linear-gradient(110deg,#f4eddb,#d8ccb1,#f8f2e5);color:#2f3227;text-align:center}
+.polishBottleLabel small{font:700 5px var(--body,Arial,sans-serif);letter-spacing:.2em;color:#5d604f}
+.polishBottleLabel strong{font:500 25px/1 var(--display,Georgia,serif);letter-spacing:.04em}
+.polishBottleLabel em{margin-top:4px;font:normal 5px var(--body,Arial,sans-serif);letter-spacing:.19em}
+.polishCampaignNote{position:absolute;right:0;bottom:12px;color:#aaa997;font-size:7px;letter-spacing:.2em;text-transform:uppercase}
+
+/* Horizontal product shelves: native touch scrolling and scroll snapping. */
+.polishTrackWrap{position:relative;margin-top:18px}
+.polishShelfTrack,.homeFeature .featuredGrid.polishShelfTrack{
+  display:flex!important;flex-wrap:nowrap;align-items:stretch;gap:16px;overflow-x:auto;overflow-y:hidden;
+  padding:8px 3px 21px;scroll-snap-type:x mandatory;scroll-padding-inline:4px;overscroll-behavior-x:contain;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;touch-action:pan-x pan-y;
+}
+.polishShelfTrack::-webkit-scrollbar{display:none}
+.polishShelfTrack>.card,.homeFeature .featuredGrid.polishShelfTrack>.card{
+  flex:0 0 clamp(220px,24vw,285px);width:clamp(220px,24vw,285px);min-width:0;scroll-snap-align:start;scroll-snap-stop:normal;
+}
+.polishFeaturedTrack{margin-top:2px}
+.polishShelfControls{display:flex;gap:7px;justify-content:flex-end;align-items:center;margin:2px 0 9px}
+.polishShelfControls button{display:grid;place-items:center;width:38px;height:38px;border:1px solid #403c33;border-radius:50%;background:#121310;color:#f2ecdf;font-size:20px;line-height:1;transition:background .24s ease,border-color .24s ease,transform .24s ease,opacity .24s ease}
+.polishShelfControls button:hover:not(:disabled){background:#26291f;border-color:var(--polish-gold);transform:translateY(-2px)}
+.polishShelfControls button:active:not(:disabled){transform:scale(.96)}
+.polishShelfControls button:disabled{opacity:.3;cursor:default}
+.polishSplitControls{margin-top:14px}
+.polishShelfSection{padding-top:58px!important;padding-bottom:56px!important}
+.polishShelfHeading{display:flex;align-items:end;justify-content:space-between;gap:22px;margin-bottom:16px}
+.polishShelfHeading h2{margin:11px 0 10px;font:500 clamp(2.3rem,4vw,3.7rem)/.98 var(--display,Georgia,serif);letter-spacing:-.035em}
+.polishShelfHeading p{margin:0;max-width:530px;color:var(--muted,#a29d94);font-size:11px;line-height:1.75}
+.polishShelfHeading .polishEyebrow{color:var(--gold-2,#dfc9a2)}
+.polishShelfHeading .polishShelfControls{flex:0 0 auto;margin-bottom:0}
+
+/* House promotions give the scroll journey a visual change of pace. */
+.polishPromoBand{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:4px auto 10px;padding:0 22px;max-width:1284px}
+.polishPromoCard{position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;min-height:205px;overflow:hidden;padding:27px 29px;border:1px solid rgba(255,255,255,.09);background:linear-gradient(125deg,#171a15,#23271e);color:#f6f1e8;transition:transform .34s var(--ease),border-color .3s ease}
+.polishPromoCard:hover{transform:translateY(-3px);border-color:rgba(195,171,126,.4)}
+.polishPromoCard:after{content:"";position:absolute;z-index:-1;width:185px;height:185px;right:-39px;bottom:-73px;border:1px solid rgba(223,201,162,.18);border-radius:50%;box-shadow:0 0 0 22px rgba(223,201,162,.025),0 0 0 45px rgba(223,201,162,.02)}
+.polishPromoCard small{color:#cdbb96;font-size:8px;font-weight:800;letter-spacing:.17em;text-transform:uppercase}
+.polishPromoCard h3{margin:11px 0 9px;max-width:460px;font:500 clamp(1.6rem,3vw,2.5rem)/1.04 var(--display,Georgia,serif);letter-spacing:-.03em}
+.polishPromoCard p{max-width:420px;margin:0;color:#b9baad;font-size:10px;line-height:1.8}
+.polishPromoCard button{margin-top:18px;padding:0 0 5px;border:0;border-bottom:1px solid rgba(223,201,162,.5);background:transparent;color:#e4d3b1;font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;transition:color .2s ease,transform .25s ease}
+.polishPromoCard button:hover{color:#fff;transform:translateX(3px)}
+.polishPromoGlyph{position:absolute;right:24px;top:22px;color:rgba(223,201,162,.45);font:italic 36px var(--display,Georgia,serif)}
+.polishReveal{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .65s var(--ease)}
+.polishReveal.polishVisible{opacity:1;transform:none}
+
+/* A small but important mobile fix: maintain two columns in the shop grid. */
+@media(max-width:700px){
+  .polishCampaign{grid-template-columns:minmax(0,1fr) minmax(90px,.48fr);gap:6px;min-height:260px;margin:12px 14px 4px;padding:27px 20px}
+  .polishCampaign h2{font-size:clamp(2.1rem,8vw,3.2rem);margin:14px 0 11px}
+  .polishCampaign p{font-size:10px;line-height:1.75}
+  .polishCampaignArt{min-height:160px;transform:scale(.86);margin-inline:-18px}
+  .polishCampaignNote{right:0;bottom:2px;font-size:5.5px;letter-spacing:.12em;white-space:nowrap}
+  .polishBottle{transform:scale(.84) rotate(-7deg)}
+  .polishShelfSection{padding:42px 14px!important}
+  .polishShelfHeading{align-items:end;gap:8px}
+  .polishShelfHeading h2{font-size:2.25rem}
+  .polishShelfHeading p{font-size:9px;max-width:260px}
+  .polishShelfHeading .polishShelfControls{gap:5px}
+  .polishShelfControls button{width:34px;height:34px;font-size:18px}
+  .polishShelfTrack,.homeFeature .featuredGrid.polishShelfTrack{gap:10px;padding:7px 2px 17px}
+  .polishShelfTrack>.card,.homeFeature .featuredGrid.polishShelfTrack>.card{flex:0 0 min(76vw,280px);width:min(76vw,280px)}
+  .polishPromoBand{grid-template-columns:1fr;gap:10px;padding:0 14px;margin:0 auto 7px}
+  .polishPromoCard{min-height:172px;padding:22px 21px}
+  .polishPromoCard h3{font-size:1.9rem;max-width:80%}
+  .polishPromoCard p{font-size:9px;max-width:83%}
+  .shopPage #shopGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px}
+  .shopPage #shopGrid>.card{min-width:0}
+  .shopPage #shopGrid .info{padding:11px 9px}
+  .shopPage #shopGrid .cardNameText{font-size:clamp(13px,3.7vw,17px)}
+  .shopPage #shopGrid .desc{font-size:9px;line-height:1.55}
+  .shopPage #shopGrid .actions{grid-template-columns:1fr;gap:6px}
+  .shopPage #shopGrid .actions button{min-height:39px;font-size:8px}
+  .homeFeature .splitIntro{gap:14px}
+  .homeFeature .splitIntro>div:last-child{min-width:0}
+  .homeFeature .splitIntro>div:last-child p{font-size:10px;line-height:1.7}
+  .polishFeaturedTrack{margin-top:4px}
+}
+@media(max-width:390px){
+  .polishCampaign{grid-template-columns:minmax(0,1fr) 78px;padding:23px 16px}
+  .polishCampaignArt{transform:scale(.7);margin-inline:-30px}
+  .polishCampaign h2{font-size:2rem}
+  .polishCampaignActions{gap:8px;margin-top:17px}
+  .polishCampaignActions .gold{min-height:40px;padding:0 11px;font-size:8px}
+  .polishCampaignActions .polishTextAction{font-size:8px}
+  .polishShelfTrack>.card,.homeFeature .featuredGrid.polishShelfTrack>.card{flex-basis:78vw;width:78vw}
+  .shopPage #shopGrid .cardNameText{font-size:12px}
+  .shopPage #shopGrid .cardSizeLabel{font-size:7px}
+  .shopPage #shopGrid .sizeSelect{padding-inline:5px;font-size:8px}
+}
+@keyframes polishOrbit{to{transform:rotate(360deg)}}
+@keyframes polishBreathe{0%,100%{transform:scale(.94);opacity:.7}50%{transform:scale(1.06);opacity:1}}
+@keyframes polishBottleFloat{0%,100%{translate:0 2px;rotate:-7deg}50%{translate:0 -8px;rotate:-4deg}}
+@media(prefers-reduced-motion:reduce){
+  .polishCampaign:before,.polishCampaign:after,.polishCampaignGlow,.polishBottle{animation:none!important}
+  .polishReveal{opacity:1!important;transform:none!important;transition:none!important}
+  .polishShelfTrack,.homeFeature .featuredGrid.polishShelfTrack{scroll-behavior:auto!important}
+  .polishPromoCard,.polishShelfControls button{transition:none!important}
+}
