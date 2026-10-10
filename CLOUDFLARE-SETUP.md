@@ -1,22 +1,28 @@
-# Seven Perfume — Cloudflare setup
+# Seven Perfume — Cloudflare-ready setup (V7)
 
-This version is Cloudflare Workers-ready.
-
-## What it does now
-- Serves the existing `public/` storefront through Cloudflare static assets.
-- Handles `/api/orders` through a Cloudflare Worker.
-- Keeps test orders in worker memory for the CEO demo.
-- Keeps the existing local `server.js` so the same project still runs locally.
-
-## Important
-This backend is TEST MODE only. In-memory orders can disappear when the Worker is restarted or evicted. Do not use this for real customer orders.
-
-Before production we will replace the in-memory order store with Cloudflare D1 or another production database and add proper admin authentication.
-
-## Cloudflare dashboard values
+## Cloudflare Worker
 Repository: `pitotesting`
-Root directory: `seven-perfume-commerce`
-Build command: leave blank
-Deploy command: `npx wrangler deploy`
+Root directory: `seven-perfume-commerce` if the project remains inside that folder.
+Build command: leave blank.
+Deploy command: `npx wrangler deploy`.
 
-If Cloudflare asks for a root directory, use `seven-perfume-commerce` because `wrangler.jsonc`, `package.json`, `src`, and `public` live there.
+## Admin protection
+The order API is no longer public.
+
+Create a Cloudflare Worker secret named:
+`ADMIN_TOKEN`
+
+Use a strong random value. Do not commit it to GitHub and do not put it in frontend JavaScript.
+
+Local testing: `run.bat` generates a temporary local admin token and prints it in the Command Prompt. Use that token at `/admin.html`.
+
+## Important test-mode limitation
+The Cloudflare Worker still keeps TEST orders in memory. That is intentionally temporary for the CEO demo. Worker instances can restart or scale, so these are not durable business records.
+
+Before real customers:
+- replace memory storage with D1/Supabase/Postgres
+- add proper admin identity/access control (Cloudflare Access is recommended for the admin route)
+- connect PayMongo server-side
+- confirm payments with PayMongo webhooks
+- replace assumed shipping rates with verified courier data/API
+- add production policies and customer support information

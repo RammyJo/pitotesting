@@ -3,73 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Seven Perfume — find the scent that feels like you.">
-<meta name="theme-color" content="#f7f6f2">
-<meta name="robots" content="noindex,nofollow">
-<title>Seven Perfume — Lasts Like Memories</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="/style.css?v=9.3">
+<meta name="theme-color" content="#171916">
+<meta name="description" content="Discover your signature fragrance with Seven Perfume.">
+<title>Seven Perfume — Find Your Signature</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css?v=page-flow-2">
 </head>
 <body>
-<header>
-  <a class="logo" href="#/" data-route="home" aria-label="Seven Perfume home">SEVEN PERFUME</a>
-  <nav aria-label="Primary navigation" class="primaryNav">
-    <a href="#/shop" data-route="shop">Shop</a>
-    <a href="#/finder" data-route="finder">Find Your Scent</a>
-    <a href="#/about" data-route="about">Our Story</a>
-  </nav>
-  <div class="headerActions">
-    <button id="mobileMenuOpen" class="mobileMenuButton" type="button" aria-label="Open all options" aria-expanded="false" aria-controls="mobileMenu">
-      <span class="hamburgerLines" aria-hidden="true"><i></i><i></i><i></i></span><span class="menuButtonLabel">MENU</span>
-    </button>
-    <button id="cartOpen" type="button" aria-label="Open cart" aria-haspopup="dialog" aria-expanded="false">Cart <b id="count">0</b></button>
-  </div>
-</header>
-<div id="mobileMenu" class="mobileMenu" hidden>
-  <form id="menuSearchForm" class="menuSearchForm" role="search">
-    <label for="menuSearch">FIND A FRAGRANCE</label>
-    <div class="menuSearchRow"><input id="menuSearch" type="search" placeholder="Search fragrance..." autocomplete="off"><button type="submit" aria-label="Search fragrances">Search <span aria-hidden="true">→</span></button></div>
-  </form>
-  <div class="menuLinks">
-    <a href="#/shop" data-route="shop"><span>01</span> Shop all fragrances <b>↗</b></a>
-    <a href="#/finder" data-route="finder"><span>02</span> Find your scent <b>↗</b></a>
-    <a href="#/about" data-route="about"><span>03</span> Our story <b>↗</b></a>
-    <a href="#/vip" data-route="vip"><span>04</span> Seven Privé membership <b>↗</b></a>
-  </div>
-  <p class="menuFootnote">LASTS LIKE MEMORIES.</p>
-</div>
-
-<main id="routeView" class="routeView" aria-live="polite"><noscript><section class="page simplePage"><small>SEVEN PERFUME</small><h1>JAVASCRIPT IS REQUIRED.</h1><p>Please enable JavaScript to use the Seven Perfume storefront.</p></section></noscript></main>
-
-<div class="backdrop" id="cbg" aria-hidden="true"></div>
-<aside class="drawer" id="cart" role="dialog" aria-modal="true" aria-labelledby="cartTitle" aria-hidden="true">
-  <div class="dhead"><strong id="cartTitle">YOUR CART</strong><button id="closeCart" class="iconButton" type="button" aria-label="Close cart">×</button></div>
-  <div id="items" class="items"></div>
-  <div class="foot">
-    <div class="line"><span>Subtotal</span><b id="total">₱0</b></div>
-    <small>Shipping is calculated during checkout after you enter your delivery region.</small>
-    <button id="checkout" class="gold full" type="button">CHECKOUT →</button>
-  </div>
-</aside>
-
-<div class="backdrop" id="mbg" aria-hidden="true"></div>
-<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mname" aria-hidden="true">
-  <button class="x" id="mx" type="button" aria-label="Close product details">×</button>
-  <div class="mvisual" id="mvisual"></div>
-  <div class="mbody">
-    <small>SEVEN PERFUME</small>
-    <h3 id="mname"></h3>
-    <b id="mprice"></b>
-    <div id="mtags"></div>
-    <p id="mdesc"></p>
-    <label class="sizeLabel" for="modalSize">SIZE<select id="modalSize"></select></label>
-    <button class="gold" id="madd" type="button">ADD TO CART</button>
-    <button class="dark" id="mbuy" type="button">BUY NOW</button>
-  </div>
-</div>
-
+<div class="announcement"><span>THE SEVEN EDIT · FIND YOUR SIGNATURE</span><span>10mL, 30mL & 50mL · NATIONWIDE DELIVERY OPTIONS</span></div>
+<header class="site-header" id="siteHeader"><div class="header-main">
+  <a class="brand" href="#/home" aria-label="Seven Perfume home"><span class="brand-mark">7</span><span class="brand-type"><b>SEVEN</b><small>PERFUME</small></span></a>
+  <form id="searchForm" class="searchbox" role="search"><span class="search-mark" aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search fragrances, notes, or a mood…" autocomplete="off" aria-label="Search fragrances"><button class="search-submit" type="submit" aria-label="Search">Search <span>→</span></button></form>
+  <a class="header-discover" href="#/finder"><span class="discover-icon">✳</span><span><small>NEED A MATCH?</small><b>Find your scent</b></span></a>
+  <a id="cartOpen" class="cart-button" href="#/cart" aria-label="Open shopping cart"><span class="cart-icon" aria-hidden="true">▱</span><span class="cart-copy"><small>YOUR</small><b>Cart <span id="count">0</span></b></span></a>
+</div></header>
+<nav class="categorybar" aria-label="Shop categories"><a class="category-link" data-nav="shop" href="#/shop?gender=all">☰ <span>All fragrances</span></a><a class="category-link" data-nav="shop-men" href="#/shop?gender=men">For him</a><a class="category-link" data-nav="shop-women" href="#/shop?gender=women">For her</a><a class="category-link" data-nav="finder" href="#/finder">Scent finder</a><a class="category-link" data-nav="about" href="#/about">Our story</a><span class="category-note">A SIGNATURE FOR EVERY SIDE OF YOU</span></nav>
+<main id="app" class="route-outlet" tabindex="-1" aria-live="polite"></main>
+<footer class="footer"><a class="brand footer-brand" href="#/home"><span class="brand-mark">7</span><span class="brand-type"><b>SEVEN</b><small>PERFUME</small></span></a><span>MAKE IT MEMORABLE.</span><div class="footer-links"><a href="#/shop?gender=all">Shop</a><a href="#/about">Our story</a><a href="#/finder">Scent finder</a><a href="/admin.html">Test admin</a><a href="#/home" class="back-top">Home page ↑</a></div></footer>
+<nav class="mobile-dock" aria-label="Quick navigation"><a href="#/home" data-mobile="home"><span>⌂</span><small>Home</small></a><a href="#/shop?gender=all" data-mobile="shop"><span>⌕</span><small>Shop</small></a><a href="#/finder" data-mobile="finder"><span>✳</span><small>Find scent</small></a><a href="#/cart" data-mobile="cart"><span>▱</span><small>Cart <b id="mobileCount">0</b></small></a></nav>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script src="/app.js?v=9.3" defer></script>
+<script src="/app.js?v=page-flow-2"></script>
 </body>
 </html>
