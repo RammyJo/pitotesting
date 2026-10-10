@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Seven Perfume — find the scent that feels like you.">
+<meta name="theme-color" content="#f7f6f2">
+<meta name="robots" content="noindex,nofollow">
+<title>Seven Perfume — Lasts Like Memories</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/style.css?v=9.3">
+<link rel="stylesheet" href="/ui-polish.css?v=1">
+</head>
+<body>
+<header>
+  <a class="logo" href="#/" data-route="home" aria-label="Seven Perfume home">SEVEN PERFUME</a>
+  <nav aria-label="Primary navigation" class="primaryNav">
+    <a href="#/shop" data-route="shop">Shop</a>
+    <a href="#/finder" data-route="finder">Find Your Scent</a>
+    <a href="#/about" data-route="about">Our Story</a>
+  </nav>
+  <div class="headerActions">
+    <button id="mobileMenuOpen" class="mobileMenuButton" type="button" aria-label="Open all options" aria-expanded="false" aria-controls="mobileMenu">
+      <span class="hamburgerLines" aria-hidden="true"><i></i><i></i><i></i></span><span class="menuButtonLabel">MENU</span>
+    </button>
+    <button id="cartOpen" type="button" aria-label="Open cart" aria-haspopup="dialog" aria-expanded="false">Cart <b id="count">0</b></button>
+  </div>
+</header>
+<div id="mobileMenu" class="mobileMenu" hidden>
+  <form id="menuSearchForm" class="menuSearchForm" role="search">
+    <label for="menuSearch">FIND A FRAGRANCE</label>
+    <div class="menuSearchRow"><input id="menuSearch" type="search" placeholder="Search fragrance..." autocomplete="off"><button type="submit" aria-label="Search fragrances">Search <span aria-hidden="true">→</span></button></div>
+  </form>
+  <div class="menuLinks">
+    <a href="#/shop" data-route="shop"><span>01</span> Shop all fragrances <b>↗</b></a>
+    <a href="#/finder" data-route="finder"><span>02</span> Find your scent <b>↗</b></a>
+    <a href="#/about" data-route="about"><span>03</span> Our story <b>↗</b></a>
+    <a href="#/vip" data-route="vip"><span>04</span> Seven Privé membership <b>↗</b></a>
+  </div>
+  <p class="menuFootnote">LASTS LIKE MEMORIES.</p>
+</div>
+
+<main id="routeView" class="routeView" aria-live="polite"><noscript><section class="page simplePage"><small>SEVEN PERFUME</small><h1>JAVASCRIPT IS REQUIRED.</h1><p>Please enable JavaScript to use the Seven Perfume storefront.</p></section></noscript></main>
+
+<div class="backdrop" id="cbg" aria-hidden="true"></div>
+<aside class="drawer" id="cart" role="dialog" aria-modal="true" aria-labelledby="cartTitle" aria-hidden="true">
+  <div class="dhead"><strong id="cartTitle">YOUR CART</strong><button id="closeCart" class="iconButton" type="button" aria-label="Close cart">×</button></div>
+  <div id="items" class="items"></div>
+  <div class="foot">
+    <div class="line"><span>Subtotal</span><b id="total">₱0</b></div>
+    <small>Shipping is calculated during checkout after you enter your delivery region.</small>
+    <button id="checkout" class="gold full" type="button">CHECKOUT →</button>
+  </div>
+</aside>
+
+<div class="backdrop" id="mbg" aria-hidden="true"></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mname" aria-hidden="true">
+  <button class="x" id="mx" type="button" aria-label="Close product details">×</button>
+  <div class="mvisual" id="mvisual"></div>
+  <div class="mbody">
+    <small>SEVEN PERFUME</small>
+    <h3 id="mname"></h3>
+    <b id="mprice"></b>
+    <div id="mtags"></div>
+    <p id="mdesc"></p>
+    <label class="sizeLabel" for="modalSize">SIZE<select id="modalSize"></select></label>
+    <button class="gold" id="madd" type="button">ADD TO CART</button>
+    <button class="dark" id="mbuy" type="button">BUY NOW</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="/app.js?v=9.3" defer></script>
+<script src="/ui-polish.js?v=1" defer></script>
+</body>
+</html>
