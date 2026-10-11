@@ -49,7 +49,7 @@ function saveCart(){try{localStorage.setItem('seven-cart',JSON.stringify(S.cart)
 try{const saved=safeRead('seven-cart',[]);if(Array.isArray(saved))S.cart=saved.filter(x=>Number.isInteger(x.i)&&P[x.i]&&['10','30','50'].includes(String(x.sizeId))&&Number.isInteger(x.q)&&x.q>0&&x.q<=20).map(x=>({i:x.i,q:x.q,sizeId:String(x.sizeId)}))}catch{S.cart=[]}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function toast(message){const el=$('#toast');if(!el)return;el.textContent=message;el.classList.add('show');clearTimeout(window.__sevenToast);window.__sevenToast=setTimeout(()=>el.classList.remove('show'),1900)}
-function bottle(i=0,scale=1){const p=P[i]||P[0];return `<div class="bottle tone-${i%13}" style="--bscale:${scale}"><div class="cap"></div><div class="label"><span>SEVEN PERFUME</span><b>${esc(p.name.split(' ')[0])}</b><em>EAU DE PARFUM</em></div></div>`}
+function bottle(i=0,scale=1){const p=P[i]||P[0];return `<div class="bottle tone-${i%13}" data-spin="true" data-spin-name="${esc(p.name)}" style="--bscale:${scale}" aria-label="${esc(p.name)} cylindrical bottle; drag horizontally to rotate"><div class="cap"></div><div class="label"><span>SEVEN PERFUME</span><b>${esc(p.name.split(' ')[0])}</b><em>EAU DE PARFUM</em></div></div>`}
 function productHref(p){return `#/product/${encodeURIComponent(p.productId)}`}
 function productById(id){return P.find(p=>p.productId===id)||P.find(p=>p.name.toLowerCase().replace(/\s+/g,'-')===id)||null}
 function unitPrice(sizeId){return SIZES.find(s=>s.id===String(sizeId))?.price||350}
@@ -143,4 +143,47 @@ document.addEventListener('input',event=>{if(event.target.id==='detailQty')updat
 document.addEventListener('submit',event=>{if(event.target.id==='searchForm'){event.preventDefault();const q=$('#search').value.trim();navigate(`/shop?gender=all${q?'&q='+encodeURIComponent(q):''}`)}else if(event.target.id==='checkoutForm'){event.preventDefault();submitCheckout(event.target)}});
 window.addEventListener('hashchange',()=>renderRoute(false));
 document.addEventListener('keydown',event=>{if(event.key==='Escape'){const route=currentRoute();if(route.path==='/checkout')navigate('/cart')}});
+
+// Interactive simulated 360-degree preview for the site's CSS-generated placeholder bottles.
+// This is a visual mockup, not a real product-photo turntable.
+let bottleDrag=null;
+document.addEventListener('pointerdown',event=>{
+  const bottle=event.target.closest('[data-spin="true"]');
+  if(!bottle||event.button!==0)return;
+  bottleDrag={bottle,pointerId:event.pointerId,startX:event.clientX,startRotation:Number(bottle.dataset.rotation||0),moved:false};
+  try{bottle.setPointerCapture(event.pointerId)}catch{}
+});
+document.addEventListener('pointermove',event=>{
+  if(!bottleDrag||event.pointerId!==bottleDrag.pointerId)return;
+  const dx=event.clientX-bottleDrag.startX;
+  if(Math.abs(dx)>3)bottleDrag.moved=true;
+  if(!bottleDrag.moved)return;
+  const rotation=bottleDrag.startRotation+dx*1.25;
+  bottleDrag.bottle.dataset.rotation=String(rotation);
+  bottleDrag.bottle.style.setProperty('--spin',rotation+'deg');
+});
+function finishBottleDrag(event){
+  if(!bottleDrag||event.pointerId!==bottleDrag.pointerId)return;
+  if(bottleDrag.moved){
+    bottleDrag.bottle.dataset.dragged='true';
+    bottleDrag.bottle.style.transition='transform .08s linear';
+    setTimeout(()=>{if(bottleDrag?.bottle!==event.target)bottleDrag=null},0);
+  }
+  bottleDrag=null;
+}
+document.addEventListener('pointerup',finishBottleDrag);
+document.addEventListener('pointercancel',finishBottleDrag);
+document.addEventListener('click',event=>{
+  const bottle=event.target.closest('[data-spin="true"]');
+  if(bottle?.dataset.dragged==='true'){event.preventDefault();event.stopPropagation();delete bottle.dataset.dragged}
+},true);
+document.addEventListener('keydown',event=>{
+  const bottle=event.target.closest('[data-spin="true"]');
+  if(!bottle||!['ArrowLeft','ArrowRight'].includes(event.key))return;
+  event.preventDefault();
+  const rotation=Number(bottle.dataset.rotation||0)+(event.key==='ArrowRight'?18:-18);
+  bottle.dataset.rotation=String(rotation);
+  bottle.style.setProperty('--spin',rotation+'deg');
+});
+
 cartSync(false);renderRoute(false);
