@@ -112,8 +112,8 @@ export default {
         const order = {
           id: `SP-${crypto.randomUUID().replaceAll('-', '').slice(0, 10).toUpperCase()}`,
           createdAt: new Date().toISOString(),
-          paymentStatus: 'TEST_PAID',
-          orderStatus: 'PROCESSING',
+          paymentStatus: 'NOT_COLLECTED',
+          orderStatus: 'TEST_ORDER',
           ...result.order,
           mode: 'TEST',
         };
