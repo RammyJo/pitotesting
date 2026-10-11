@@ -109,7 +109,7 @@ const server = http.createServer(async (req, res) => {
         catch (e) { return sendJson(res, e.message === 'REQUEST_TOO_LARGE' ? 413 : 400, { error: e.message === 'REQUEST_TOO_LARGE' ? 'Request too large.' : 'Invalid JSON.' }); }
         const result = buildOrder(body);
         if (!result.ok) return sendJson(res, 400, { error: result.error });
-        const order = { id: `SP-${randomUUID().replaceAll('-', '').slice(0, 10).toUpperCase()}`, createdAt: new Date().toISOString(), paymentStatus: 'TEST_PAID', orderStatus: 'PROCESSING', ...result.order, mode: 'TEST' };
+        const order = { id: `SP-${randomUUID().replaceAll('-', '').slice(0, 10).toUpperCase()}`, createdAt: new Date().toISOString(), paymentStatus: 'NOT_COLLECTED', orderStatus: 'TEST_ORDER', ...result.order, mode: 'TEST' };
         const orders = await readOrders(); orders.push(order); await saveOrders(orders);
         return sendJson(res, 201, { order, testMode: true });
       }
