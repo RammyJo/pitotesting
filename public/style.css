@@ -415,3 +415,15 @@ html{scroll-padding-top:0}
 @media(prefers-reduced-motion:reduce){
   .bottle,.card:hover .bottle,.detail-visual .bottle{animation:none!important}
 }
+
+
+/* Make the hero and story illustrations cylindrical too, not rectangular bottles. */
+.hero-cap{border-radius:50% / 14%;background:linear-gradient(90deg,#282a24 0%,#77796b 22%,#aaa995 48%,#55584c 78%,#20221d 100%)}
+.hero-glass{border-radius:50% / 8%;background:
+  linear-gradient(90deg,rgba(255,255,255,.34),rgba(255,255,255,.03) 16%,rgba(171,163,137,.4) 46%,rgba(255,255,255,.05) 75%,rgba(48,50,39,.28)),
+  linear-gradient(#b8b5a4 5%,#f0ead7 40%,#a8a58c 100%);
+  box-shadow:inset 8px 0 12px rgba(255,255,255,.2),inset -10px 0 16px rgba(53,55,42,.2),inset 0 0 0 4px rgba(255,255,255,.12)}
+.story-cap{border-radius:50% / 14%;background:linear-gradient(90deg,#34372d,#9b9a88 45%,#36382e)}
+.story-glass{border-radius:50% / 8%;background:linear-gradient(90deg,#6b6b5b,#b5b19d 20%,#ede7d5 42%,#d0c8af 68%,#666656);box-shadow:inset 8px 0 12px rgba(255,255,255,.2),inset -10px 0 14px rgba(46,47,38,.22),0 18px 25px rgba(46,47,38,.2)}
+.spin-hint{position:absolute;z-index:4;left:50%;bottom:12px;transform:translateX(-50%);display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border:1px solid rgba(122,119,100,.24);border-radius:99px;background:rgba(255,254,250,.86);color:#666b58;font-size:7px;font-weight:700;letter-spacing:.12em;white-space:nowrap;pointer-events:none;backdrop-filter:blur(6px)}
+.detail-edition:before{content:"↔ DRAG TO ROTATE · ";font-weight:700;color:#626a51}
