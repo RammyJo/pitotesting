@@ -151,6 +151,7 @@ document.addEventListener('pointerdown',event=>{
   const bottle=event.target.closest('[data-spin="true"]');
   if(!bottle||event.button!==0)return;
   bottleDrag={bottle,pointerId:event.pointerId,startX:event.clientX,startRotation:Number(bottle.dataset.rotation||0),moved:false};
+  bottle.style.transition='transform .04s linear';
   try{bottle.setPointerCapture(event.pointerId)}catch{}
 });
 document.addEventListener('pointermove',event=>{
@@ -164,11 +165,8 @@ document.addEventListener('pointermove',event=>{
 });
 function finishBottleDrag(event){
   if(!bottleDrag||event.pointerId!==bottleDrag.pointerId)return;
-  if(bottleDrag.moved){
-    bottleDrag.bottle.dataset.dragged='true';
-    bottleDrag.bottle.style.transition='transform .08s linear';
-    setTimeout(()=>{if(bottleDrag?.bottle!==event.target)bottleDrag=null},0);
-  }
+  if(bottleDrag.moved)bottleDrag.bottle.dataset.dragged='true';
+  bottleDrag.bottle.style.transition='';
   bottleDrag=null;
 }
 document.addEventListener('pointerup',finishBottleDrag);
