@@ -1,12 +1,12 @@
 # Seven Perfume — Amazon-inspired storefront (test project)
 
-This is a **complete local project**, based on the existing Seven Perfume V8.3 test project, with the new Amazon-inspired interface applied. It includes the frontend, local test server, catalog/order validation, Wrangler configuration, and admin page.
+This is a supplemental interface note for the root-level Seven Perfume test project. The deployable Worker configuration is at the repository root; do not deploy this nested prototype as the live target. It includes the frontend, local test server, catalog/order validation, Wrangler configuration, and admin page.
 
 ## Run it on your computer
 
 1. Extract this ZIP.
-2. Open the `seven-perfume-commerce` folder.
-3. Double-click `run.bat` (Node.js must be installed).
+2. Open the repository root containing wrangler.jsonc and package.json.
+3. Run npm install, then npm start for the local Node test server (Node.js LTS must be installed).
 4. Open `http://localhost:4173`.
 
 ## What changed in the interface
