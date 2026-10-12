@@ -438,7 +438,7 @@ html{scroll-padding-top:0}
   will-change:transform;
 }
 .bottle:before{
-  opacity:calc(1 - var(--turn-edge,0) * .52);
+  opacity:var(--turn-shine-opacity,1);
 }
 .bottle .label{
   opacity:var(--turn-label-opacity,1);
