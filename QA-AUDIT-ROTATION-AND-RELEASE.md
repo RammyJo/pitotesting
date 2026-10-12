@@ -1,47 +1,55 @@
-# Seven Perfume — Rotation Update and Release QA Audit
+# Seven Perfume — Storefront Audit and Rotation Improvements
 
-Date: 2026-10-12
-Target: `create` branch only. The live `main` branch was not changed.
+Date: 2026-10-12  
+Target: `create` branch only. `main` was not changed.
 
-## Implemented in this pass
+## Changes in this pass
 
-- Changed the CSS-generated placeholder product bottles to cylindrical silhouettes with round cap/body shading.
-- Added horizontal pointer-drag rotation to the placeholder bottle illustrations. This is a **simulated 3D effect**, not a true 360-degree product-photo set.
-- Added a visible “DRAG TO ROTATE” hint to product cards and product-detail art.
-- Updated the home hero and Our Story illustrations to use cylindrical bottle silhouettes too.
-- Changed the test order status from `TEST_PAID` / `PROCESSING` to `NOT_COLLECTED` / `TEST_ORDER` in both the Cloudflare Worker and local Node server. The checkout does not collect real payment, so it must not imply that it has.
-- Bumped the static asset query version so browsers request the updated storefront files.
+- Reworked the fake-bottle turntable. It no longer rotates a flat label through CSS `rotateY()`, which made the bottle look like a card and mirrored the text.
+- The bottle narrows as it turns toward a side view; the label fades at edge-on angles and stays readable on the reverse-facing side.
+- Added a shared rotation setter so drag and keyboard controls use the same orientation logic.
+- Fixed keyboard rotation: focus normally lands on the product link surrounding the bottle, not the decorative bottle div. Left/right arrow keys now find and rotate the bottle inside the focused link.
+- Kept horizontal pointer dragging, pointer cancellation cleanup, click suppression after a drag, and vertical page scrolling on touch screens.
+- Updated CSS/JS cache version so clients request the changed interaction.
+- Preserved test-order statuses `NOT_COLLECTED` and `TEST_ORDER`; this storefront still does not collect real payment.
 
-## High-priority issues still open
+## What this rotation is — and is not
 
-### 1. Orders are not durably stored in the Cloudflare Worker
-The Worker stores orders in a global in-memory array. Cloudflare can evict or replace isolates, and different isolates do not share that array. Orders can disappear or be inconsistent. Before real sales, use D1, Durable Objects, or another persistent database and test retries/concurrency.
+This is a stylized visual mockup using CSS-generated bottles. It is **not a true 360-degree product render** and does not show real side/back product details. A convincing, accurate turntable needs a matching set of product photos (or a properly modelled 3D asset) for each fragrance and size. Do not present the placeholder art as a photograph of the actual product.
 
-### 2. Payments are not integrated
-Checkout is a test-order flow only. No payment provider confirms payment, and no webhook reconciles paid/refunded/failed states. Do not accept real orders or describe them as paid until payment integration and webhook verification exist.
+## Audit findings — unresolved launch blockers
 
-### 3. Courier prices are assumptions, not live quotations
-J&T and LBC amounts are hard-coded estimates. There is no live courier API, serviceability check, parcel booking, or tracking integration. Clearly label these as estimates until verified against the actual courier contract/API.
+### Critical: Worker order persistence
+`src/index.js` stores test orders in a global in-memory array. Worker isolates can restart and do not share that array, so orders may disappear or appear inconsistent. Persist orders in Cloudflare D1 (or another durable store) before accepting real orders.
 
-### 4. Frontend and backend catalog data are duplicated
-The storefront hard-codes product names/descriptions and size prices in `public/app.js`; the backend separately defines catalog data in `src/catalog.js`. They can drift after a product or price update. Consolidate the catalog or fetch it from `/api/catalog` and verify that checkout always uses server-side prices.
+### Critical: Payment state
+There is no confirmed PayMongo integration or signed webhook reconciliation. Checkout is a test-order flow; it must not say that an order is paid or accept real payment until payment creation, webhook signature verification, idempotency, and paid/failed/refunded states are implemented and tested.
 
-### 5. Test order PII needs careful handling
-Orders contain names, emails, phone numbers and delivery addresses. Keep test data synthetic, protect the admin token, never commit real order records, and define a retention/deletion policy before launch. The local JSON file is not a production multi-user database.
+### High: Shipping is estimated
+J&T/LBC prices are hard-coded estimates, not live quotes or bookings. Label them as estimates and confirm coverage, rates, delivery timing, and tracking before launch.
 
-### 6. The open branch needs a release review
-The `create` branch has diverged from `main` and contains broader changes than the bottle preview. Review the complete pull-request diff before merging; do not merge unrelated account/membership removals or sample order data unintentionally.
+### High: Frontend/backend catalog duplication
+Product names, descriptions, and size prices are duplicated between `public/app.js` and `src/catalog.js`. Keep the server authoritative for prices and stock; add a catalog endpoint or generate both from one source, and test that manipulated client prices are ignored.
 
-## Additional quality checks to complete before launch
+### High: Admin and personal data
+Names, contact details, and delivery addresses are sensitive. Keep sample records synthetic; do not commit real order data. Verify admin-token handling, avoid exposing secrets in client code/logs, add retention/deletion controls, and move production orders out of a local JSON file or Worker memory.
 
-- Test all routes with browser back/forward, refresh, invalid product IDs, empty search results, and mobile navigation.
-- Test cart persistence, duplicate items, quantity limits, all three sizes, and cart contents after failed checkout.
-- Test checkout validation with invalid email, phone, region, postal code, missing fields, network failure, and server error.
-- Test admin access with no token, wrong token, correct token, logout, refresh, and clearing test orders.
-- Verify keyboard navigation, screen-reader labels, contrast, reduced-motion behavior, and touch interactions on a real phone.
-- Replace all placeholder bottle illustrations and unverified fragrance descriptions with approved brand assets and verified product copy before launch.
-- Add automated tests for order validation, shipping calculations, API authorization, and route templates. Run a browser-based end-to-end suite against the preview deployment.
+### High: Branch/release risk
+`create` has diverged from `main` and contains more than the rotation work. Review the complete PR diff and compare route/API changes before merging. This pass changed `create` only.
 
-## Validation limits
+## Further improvements recommended
 
-The GitHub file edits succeeded on `create`. I have not yet run a browser session or end-to-end tests against the preview URL, so the drag interaction and responsive appearance still need hands-on verification. The rotation is intentionally a stylized CSS mockup; it cannot reveal a real bottle's back/side details.
+1. Add automated tests for order validation, server-side price calculation, shipping zones, admin authorization, and error responses.
+2. Add browser end-to-end tests for every route, refresh/back/forward, invalid product IDs, empty search, cart persistence, quantity changes, and checkout failures.
+3. Test on real mobile devices for drag-vs-scroll behavior, touch target sizes, responsive product-detail layouts, and reduced-motion preferences.
+4. Audit every visible product claim and fragrance note against approved brand copy; remove any unsupported longevity, stock, delivery, or performance promises.
+5. Confirm accessibility for keyboard-only users, screen readers, focus order, contrast, form errors, and reduced-motion.
+6. Add user-facing loading, empty, success, and failure states for network/API operations.
+7. Avoid showing the rotation hint on decorative hero/story bottles where no pointer interaction is wired; reserve it for interactive product cards/details.
+8. Keep a visible disclaimer on the product detail that the generated bottle is illustrative until real product photography is supplied.
+
+## Verification status
+
+- Source-level edits are committed to `create`.
+- This connector session did not run a browser or test suite. The updated drag/keyboard behavior, visual quality, and deployment still require browser verification.
+- No production launch or payment readiness is claimed.
