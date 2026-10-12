@@ -8,6 +8,8 @@ Target: `create` branch only. `main` was not changed.
 - Reworked the fake-bottle turntable. It no longer rotates a flat label through CSS `rotateY()`, which made the bottle look like a card and mirrored the text.
 - The bottle narrows as it turns toward a side view; the label fades at edge-on angles and stays readable on the reverse-facing side.
 - Added a shared rotation setter so drag and keyboard controls use the same orientation logic.
+- Replaced a CSS `calc()` multiplication expression with a JavaScript-computed opacity value for broader browser compatibility.
+- Added Negros Island Region (NIR) to the server-side Philippine shipping region map so checkout accepts this officially established region.
 - Fixed keyboard rotation: focus normally lands on the product link surrounding the bottle, not the decorative bottle div. Left/right arrow keys now find and rotate the bottle inside the focused link.
 - Kept horizontal pointer dragging, pointer cancellation cleanup, click suppression after a drag, and vertical page scrolling on touch screens.
 - Updated CSS/JS cache version so clients request the changed interaction.
@@ -24,6 +26,9 @@ This is a stylized visual mockup using CSS-generated bottles. It is **not a true
 
 ### Critical: Payment state
 There is no confirmed PayMongo integration or signed webhook reconciliation. Checkout is a test-order flow; it must not say that an order is paid or accept real payment until payment creation, webhook signature verification, idempotency, and paid/failed/refunded states are implemented and tested.
+
+### High: Region coverage must stay current
+The server-side region map now includes Negros Island Region (NIR) and treats it as Visayas for the demo rate calculation. The zone assignment is a placeholder shipping assumption, not a courier-confirmed serviceability result. Keep the frontend and backend region lists in sync when regional data changes.
 
 ### High: Shipping is estimated
 J&T/LBC prices are hard-coded estimates, not live quotes or bookings. Label them as estimates and confirm coverage, rates, delivery timing, and tracking before launch.
