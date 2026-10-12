@@ -134,5 +134,5 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, () => {
   console.log(`Seven Perfume test server: http://localhost:${PORT}`);
-  console.log(ADMIN_TOKEN ? `Test admin token: ${ADMIN_TOKEN}` : 'ADMIN_TOKEN is not set. Admin API is disabled.');
+  console.log(ADMIN_TOKEN ? 'Admin API is enabled (token configured).' : 'ADMIN_TOKEN is not set. Admin API is disabled.');
 });
