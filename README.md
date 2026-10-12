@@ -1,68 +1,60 @@
-# Seven Perfume — Page-flow storefront (test project)
+# Seven Perfume — Storefront test project
 
-This is the complete local development project for the Seven Perfume storefront. The storefront now uses page-based navigation: clicking Shop, a fragrance, Scent Finder, Our Story, Cart, or Checkout opens a distinct page view instead of jumping down a long homepage.
+This repository's **root project** is the Cloudflare Worker storefront. The nested `seven-perfume-commerce/` folder is a separate prototype and is not the deployment target.
 
-## Run locally
+## Run the root project locally
 
-1. Extract the ZIP.
-2. Open the extracted `seven-perfume-commerce-amazon-ui` folder.
-3. Double-click `run.bat` (Node.js must be installed).
-4. Open `http://localhost:4173` in your browser.
+1. Install Node.js (LTS).
+2. In the repository root, run `npm install`.
+3. Start the local Node test server with `npm start`.
+4. Open `http://localhost:4173`.
 
-## Page navigation and working interactions
+The local server stores **test orders** in `data/orders.json`. It does not process payments. To enable the local test-admin API, set an `ADMIN_TOKEN` environment variable before starting the server. Do not use a real production secret in test environments.
 
-- Home, Shop, For Him, For Her, Saved Fragrances, Scent Finder, Our Story, Cart, Checkout, and Order Confirmation are separate client-side page routes.
-- Browser Back and Forward return to the prior page/question.
-- Header search opens a search-results page when submitted.
-- Product cards open individual fragrance detail pages.
-- Bottle size selection updates price; quantity, Add to Cart, and Buy Now work.
-- Favorites are saved in the browser and shown on the Saved Fragrances page.
-- The cart persists across refreshes and supports quantity changes and removal.
-- Checkout validates delivery fields, lets customers choose J&T or LBC, and submits a test order to the backend.
-- Test orders use backend-calculated prices and shipping. A successful test order opens a dedicated confirmation page.
-- Mobile navigation includes Home, Shop, Scent Finder, and Cart; the product catalog uses two columns on common phone widths.
-- Soft page transitions and bottle/card motions respect the user's reduced-motion preference.
+For the Cloudflare Worker development preview, run `npm run dev`. To deploy, use `npm run deploy` only after confirming the intended Cloudflare account, project, environment variables, and release branch.
 
-## Interface polish pass
+## Current storefront features
 
-The latest interface update adds a more guided, editorial shopping experience without changing the page-based route model:
+- Page-based routes for Home, Shop, fragrance details, Saved Fragrances, Scent Finder, Our Story, Cart, Checkout, and test confirmation.
+- Product size selection, quantity controls, favourites, cart persistence, search, and horizontal product shelves.
+- CSS-generated placeholder bottle illustrations with a stylized drag/arrow-key turntable effect.
+- Checkout validates customer fields and recalculates product prices and estimated shipping on the server.
+- Test admin page at `/admin.html`; order API requires a configured admin token.
+- Philippine region-based demo shipping estimates for J&T and LBC.
 
-- Featured fragrances, For Him, For Her, and related products now use side-scrolling product shelves with snap points, swipe/trackpad scrolling, arrow controls, and keyboard arrow-key support.
-- The homepage now has a featured campaign banner and two editorial promotional cards that lead to actual product/category/finder pages. They do not claim discounts or pretend to be third-party ads.
-- Selected homepage sections reveal gently as the shopper reaches them; reduced-motion settings disable the decorative animations.
-- Mobile touch targets have been enlarged, the bottom navigation receives extra safe-area space, and product shelves show a partial next card to make horizontal browsing discoverable.
-- Saving a fragrance now updates the heart and saved state without rebuilding the whole page; this keeps the currently selected bottle size and quantity intact.
-- Search text now reflects the active page, so an old search does not remain in the header after leaving search results.
-- Product cards say “3 bottle sizes” rather than implying live stock availability, because real inventory is not connected.
-- Removed an unused price-sort branch whose comparator always returned zero. It was not exposed as a customer-facing option.
+## Important limitations
 
-See `INTERFACE-AUDIT-AND-CHANGES.md` for the full bug and UX change list.
+- **Test mode only.** No PayMongo payment is collected or confirmed. Orders use `NOT_COLLECTED` and `TEST_ORDER` statuses.
+- Cloudflare Worker orders are held in isolate memory and are not durable. Do not use the Worker order API for real sales until a persistent database is implemented.
+- J&T/LBC fees are assumed estimates, not live courier quotes, bookings, or tracking.
+- The turntable is a stylized placeholder, not a true 360-degree render or photograph of the real bottle.
+- Product descriptions and notes are editorial placeholders pending approved brand copy and photography.
+- The client and server currently maintain separate catalog definitions; server-side prices remain authoritative for order totals.
 
-## Important: test mode only
+## Main files
 
-- Orders and payment status are simulated. No real payment is taken.
-- LBC/J&T rates are assumed development estimates, not official quotations or a live courier integration.
-- The product descriptions and illustrated bottles are placeholders until the brand provides verified product details and photography.
-- The admin API is protected. Do not remove authentication to make the admin page easier to access.
-- This ZIP is for local testing and development. It has **not** been deployed to the live Cloudflare URL.
+- `public/index.html`, `public/style.css`, `public/app.js` — storefront UI
+- `public/admin.html`, `public/admin.js` — test admin UI
+- `server.js` — local Node test server
+- `src/index.js` — Cloudflare Worker API and asset handler
+- `src/catalog.js`, `src/order.js` — authoritative server catalog, shipping assumptions, and order validation
+- `data/orders.json` — local test-order storage
+- `wrangler.jsonc`, `package.json` — Cloudflare configuration and scripts
+- `QA-AUDIT-ROTATION-AND-RELEASE.md`, `SECURITY-AUDIT.md`, `PRODUCTION.md` — audits and launch blockers
 
-## Project files
-
-- `public/index.html`, `public/style.css`, `public/app.js` — storefront and page-flow interface
-- `public/admin.html`, `public/admin.js` — test admin page
-- `server.js`, `src/catalog.js`, `src/order.js` — local test server, product catalog, order validation
-- `wrangler.jsonc`, `package.json` — Cloudflare Worker configuration and development dependency
-- `data/orders.json` — sample test order data
-
-## Routes to try
+## Useful routes
 
 - `#/home`
 - `#/shop?gender=all`
 - `#/shop?gender=men`
 - `#/shop?gender=women`
-- `#/product/alpha` (also `omega`, `boaz`, `exodus-noir`, `pacific`, `invincible`, `caelum`, `gourmand`, `solace`, `hadar`, `darling`, `asmira`, `elan`)
+- `#/product/omega`, `#/product/exodus-noir`, `#/product/solace`
 - `#/favorites`
 - `#/finder`
 - `#/about`
 - `#/cart`
 - `#/checkout`
+
+## Before merging or launching
+
+Review the full `create` versus `main` diff. Add automated order/API tests, verify admin authentication, persist Worker orders in D1 or another database, integrate and verify payment webhooks, confirm courier rates, publish customer policies, and test the deployed site in a real browser.
