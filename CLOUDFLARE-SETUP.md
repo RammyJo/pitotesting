@@ -1,28 +1,35 @@
-# Seven Perfume — Cloudflare-ready setup (V7)
+# Seven Perfume — Cloudflare setup
 
-## Cloudflare Worker
-Repository: `pitotesting`
-Root directory: `seven-perfume-commerce` if the project remains inside that folder.
-Build command: leave blank.
-Deploy command: `npx wrangler deploy`.
+## Deployment target
 
-## Admin protection
-The order API is no longer public.
+The deployable Worker project is at the **repository root**:
+- wrangler.jsonc
+- package.json
+- src/index.js
+- public/
 
-Create a Cloudflare Worker secret named:
-`ADMIN_TOKEN`
+Do not set Cloudflare's root directory to seven-perfume-commerce; that is a separate nested prototype, not the current root storefront.
 
-Use a strong random value. Do not commit it to GitHub and do not put it in frontend JavaScript.
+## Local preview
 
-Local testing: `run.bat` generates a temporary local admin token and prints it in the Command Prompt. Use that token at `/admin.html`.
+1. Install Node.js LTS.
+2. From the repository root, run npm install.
+3. Run npm run dev for a Wrangler development preview, or npm start for the local Node test server.
+4. Test checkout and admin behavior using synthetic data only.
 
-## Important test-mode limitation
-The Cloudflare Worker still keeps TEST orders in memory. That is intentionally temporary for the CEO demo. Worker instances can restart or scale, so these are not durable business records.
+## Admin secret
 
-Before real customers:
-- replace memory storage with D1/Supabase/Postgres
-- add proper admin identity/access control (Cloudflare Access is recommended for the admin route)
-- connect PayMongo server-side
-- confirm payments with PayMongo webhooks
-- replace assumed shipping rates with verified courier data/API
-- add production policies and customer support information
+Set a strong Worker secret named ADMIN_TOKEN in the correct Cloudflare account. Never commit it, put it in browser JavaScript, or print it to logs. The local Node server's admin API is disabled until ADMIN_TOKEN is set in its environment.
+
+## Before deployment
+
+npm run deploy deploys the Worker named pitotesting configured in wrangler.jsonc. This can affect the live Worker. Confirm the Cloudflare account and intended branch before running it. A GitHub branch or PR does not automatically deploy.
+
+## Test-mode limitations
+
+- Worker orders are stored in isolate memory and can disappear; they are not production order records.
+- No PayMongo payment is collected or verified.
+- J&T/LBC rates are assumptions, not live courier quotes.
+- The CSS bottle turntable is illustrative, not true 360-degree product photography.
+
+Before real sales, add durable D1 (or equivalent) order storage, verified payment webhooks, production admin access controls, verified courier rates/tracking, inventory enforcement, idempotency, and customer policies.
