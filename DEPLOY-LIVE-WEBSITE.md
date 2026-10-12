@@ -1,20 +1,29 @@
-# Deploy the updated interface to the existing live website
+# Deploy the root Seven Perfume storefront
 
-This project is configured to target the existing Cloudflare Worker named `pitotesting`. Confirm the name in `wrangler.jsonc` before deploying.
+**Do not run a production deploy just to preview the create branch.** The Worker name in wrangler.jsonc is pitotesting, so npm run deploy can change the existing live Worker.
 
-## Steps (Windows)
+## Test without deploying to production
 
-1. Install Node.js LTS if it is not already installed.
-2. Extract this ZIP. Open the `seven-perfume-commerce-amazon-ui` folder.
-3. Open Command Prompt or PowerShell in that folder.
-4. Run `npm install`.
-5. Run `npx wrangler login` and sign in to the Cloudflare account that owns `pitotesting` (only needed once per computer/session).
-6. Run `npm run deploy`. Check the output and make sure it says the Worker `pitotesting` was deployed successfully.
-7. Open https://pitotesting.ram-a15.workers.dev on your phone and refresh it.
+1. Install Node.js LTS.
+2. Open the repository root (the folder containing wrangler.jsonc and package.json).
+3. Run npm install.
+4. Run npm run dev to start Wrangler's local development preview.
+5. Test the routes, mobile layout, cart, test checkout, and admin authorization with synthetic data.
 
-## Important
+## Production deployment — only after review
 
-- Deploying changes the live `pitotesting` Worker. It is not a preview deployment.
-- Do not deploy if Wrangler shows a different account or a different Worker name. Stop and check `wrangler.jsonc` first.
-- This is still a test storefront. Payment and courier rates are not live, and test orders are not durable production records.
-- GitHub is not automatically updated when you deploy locally. To keep GitHub in sync, commit and push the same files separately.
+1. Confirm the intended Git branch and review the entire create versus main diff and PR #3.
+2. Confirm Wrangler is authenticated to the correct Cloudflare account.
+3. Check wrangler.jsonc; the target is the Worker named pitotesting.
+4. Ensure required Worker secrets (especially ADMIN_TOKEN) are configured in that account.
+5. Run npm run deploy only when you intend to update that live Worker.
+6. Verify the deployment output and then manually test the live site in a browser.
+
+## Release warnings
+
+- The create branch has diverged from main and removes the prior account/membership API and Seven Privé menu entry. Do not merge until that regression is deliberately resolved.
+- Orders are test-only and not durably stored by the Worker.
+- PayMongo is not integrated and no real payment is collected.
+- Shipping rates are assumed test estimates.
+- Placeholder bottle art is not a true 360-degree render.
+- Deployment does not sync changes back to GitHub; GitHub and Cloudflare must be managed separately.
