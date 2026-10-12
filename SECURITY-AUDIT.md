@@ -62,10 +62,12 @@ This audit distinguishes **bugs**, **security risks**, and **quality/consistency
 
 ## Data consistency problems fixed
 
-### 13. Catalog and pricing duplicated across layers
-**Problem:** Product names, sizes, prices and shipping assumptions were separately hard-coded in different files.
-**Risk:** A price could be changed in one layer but not another.
-**Fix:** `src/catalog.js` is the single source of truth; the storefront reads products, sizes, region mapping and rates from `/api/catalog`. The server still recalculates all order totals.
+### 13. Catalog and pricing duplicated across layers — still unresolved
+**Problem:** public/app.js embeds its own product names, descriptions, sizes, prices, region map, and shipping rates. src/catalog.js separately defines the server catalog and order rates.
+
+**Risk:** The storefront can display a price or region option that drifts from the server. The server correctly recalculates totals, but the customer-facing catalog can still be inconsistent.
+
+**Status:** The server remains authoritative for submitted order totals. The current storefront does **not** load its product catalog from /api/catalog; consolidate the source or fetch the endpoint before claiming this issue is fixed.
 
 ### 14. `server.js` and Worker had separate order logic
 **Problem:** Local Node and Cloudflare Worker accepted different shapes/validation behavior.
@@ -130,3 +132,10 @@ There was no protection against repeated order submissions.
 - Pricing/catalog is still the development assumption set provided for testing.
 
 V7 is a materially safer and cleaner **test/preview build**, not a claim of production readiness.
+
+
+## Re-audit note (2026-10-12)
+
+- The current create branch has a different page-flow interface from main. It removes the prior Seven Privé menu entry and the /api/account/* registration/login/session/membership endpoints. This may be intentional scope reduction, but it is a feature regression relative to main; restore or explicitly approve removal before merging.
+- src/index.js Worker orders are stored in a global in-memory array, unlike the local Node server's JSON file. Neither is suitable for production multi-instance order persistence.
+- The branch has diverged from main; do not assume the pull request is a clean, additive UI-only change.
