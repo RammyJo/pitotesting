@@ -144,24 +144,34 @@ document.addEventListener('submit',event=>{if(event.target.id==='searchForm'){ev
 window.addEventListener('hashchange',()=>renderRoute(false));
 document.addEventListener('keydown',event=>{if(event.key==='Escape'){const route=currentRoute();if(route.path==='/checkout')navigate('/cart')}});
 
-// Interactive simulated 360-degree preview for the site's CSS-generated placeholder bottles.
-// This is a visual mockup, not a real product-photo turntable.
+// Stylized turntable for CSS placeholder bottles (not real 360-degree product photography).
+// Simulate the cylinder narrowing at side angles instead of rotating the flat label into a mirrored plane.
+function setBottleRotation(bottle,angle){
+  const normalized=((angle%360)+360)%360;
+  const radians=normalized*Math.PI/180;
+  const width=Math.max(.16,Math.abs(Math.cos(radians)));
+  const labelOpacity=Math.max(0,Math.min(1,(width-.14)/.42));
+  bottle.dataset.rotation=String(angle);
+  bottle.dataset.face=Math.cos(radians)<0?'back':'front';
+  bottle.style.setProperty('--turn-width',width.toFixed(3));
+  bottle.style.setProperty('--turn-edge',Math.abs(Math.sin(radians)).toFixed(3));
+  bottle.style.setProperty('--turn-label-opacity',labelOpacity.toFixed(3));
+}
 let bottleDrag=null;
 document.addEventListener('pointerdown',event=>{
   const bottle=event.target.closest('[data-spin="true"]');
   if(!bottle||event.button!==0)return;
   bottleDrag={bottle,pointerId:event.pointerId,startX:event.clientX,startRotation:Number(bottle.dataset.rotation||0),moved:false};
-  bottle.style.transition='transform .04s linear';
+  bottle.style.transition='transform .035s linear';
   try{bottle.setPointerCapture(event.pointerId)}catch{}
 });
 document.addEventListener('pointermove',event=>{
   if(!bottleDrag||event.pointerId!==bottleDrag.pointerId)return;
   const dx=event.clientX-bottleDrag.startX;
-  if(Math.abs(dx)>3)bottleDrag.moved=true;
+  if(Math.abs(dx)>4)bottleDrag.moved=true;
   if(!bottleDrag.moved)return;
-  const rotation=bottleDrag.startRotation+dx*1.25;
-  bottleDrag.bottle.dataset.rotation=String(rotation);
-  bottleDrag.bottle.style.setProperty('--spin',rotation+'deg');
+  // About 1.5 full turns per 400px of dragging: responsive without feeling twitchy.
+  setBottleRotation(bottleDrag.bottle,bottleDrag.startRotation+dx*.9);
 });
 function finishBottleDrag(event){
   if(!bottleDrag||event.pointerId!==bottleDrag.pointerId)return;
@@ -176,12 +186,11 @@ document.addEventListener('click',event=>{
   if(bottle?.dataset.dragged==='true'){event.preventDefault();event.stopPropagation();delete bottle.dataset.dragged}
 },true);
 document.addEventListener('keydown',event=>{
-  const bottle=event.target.closest('[data-spin="true"]');
+  // The bottle sits inside a product link, so keyboard focus is usually on the link itself.
+  const bottle=event.target.closest('[data-spin="true"]')||event.target.querySelector?.('[data-spin="true"]');
   if(!bottle||!['ArrowLeft','ArrowRight'].includes(event.key))return;
   event.preventDefault();
-  const rotation=Number(bottle.dataset.rotation||0)+(event.key==='ArrowRight'?18:-18);
-  bottle.dataset.rotation=String(rotation);
-  bottle.style.setProperty('--spin',rotation+'deg');
+  setBottleRotation(bottle,Number(bottle.dataset.rotation||0)+(event.key==='ArrowRight'?18:-18));
 });
 
 cartSync(false);renderRoute(false);
