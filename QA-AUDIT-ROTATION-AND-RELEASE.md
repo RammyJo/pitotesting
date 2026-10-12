@@ -67,3 +67,17 @@ Names, contact details, and delivery addresses are sensitive. Keep sample record
 - Corrected the root README so it describes the root deployment target, local start command, test-only limitations, and current release blockers.
 - Removed logging of the literal local admin token from `server.js`; the startup message now only indicates whether a token is configured.
 - Kept the product catalog and test-order limitations explicit; catalog deduplication and durable Worker storage remain unresolved.
+
+
+## Additional regression audit
+
+### High: Existing membership/account functionality was removed from the branch diff
+Compared with main, the current create branch removes the Seven Privé menu entry and /api/account/* register/login/session/membership API code. This is a product-scope regression, not just a visual change. Do not merge PR #3 until this removal is either restored or explicitly approved. Restoring the API alone is not enough to call membership functional: it requires the D1 binding/schema, frontend routes/forms, and end-to-end account tests.
+
+### High: Deployment instructions were stale and unsafe
+The earlier deployment docs pointed to nested prototype folders even though the root wrangler.jsonc targets the current Worker. They also encouraged deploying directly to the live Worker for a visual preview. Updated the docs to use the repository root and local Wrangler preview first, with production deployment only after diff review.
+
+### Still unresolved
+- Frontend product data is still hard-coded separately from src/catalog.js; the security audit previously claimed it was fetched from /api/catalog, but current public/app.js does not do that.
+- No automated test suite or browser E2E run was available in this pass.
+- PR #3 remains open and create is diverged from main (25 commits ahead, 1 behind at the time of this audit).
