@@ -58,3 +58,12 @@ Names, contact details, and delivery addresses are sensitive. Keep sample record
 - Source-level edits are committed to `create`.
 - This connector session did not run a browser or test suite. The updated drag/keyboard behavior, visual quality, and deployment still require browser verification.
 - No production launch or payment readiness is claimed.
+
+
+## Additional repository hygiene fixes
+
+- Cleared the checked-in sample order record so the local admin no longer opens with a stale `TEST_PAID` / `PROCESSING` example that conflicts with the current no-payment test flow.
+- Added an `npm start` script for the actual root-level local server.
+- Corrected the root README so it describes the root deployment target, local start command, test-only limitations, and current release blockers.
+- Removed logging of the literal local admin token from `server.js`; the startup message now only indicates whether a token is configured.
+- Kept the product catalog and test-order limitations explicit; catalog deduplication and durable Worker storage remain unresolved.
