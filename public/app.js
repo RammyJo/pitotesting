@@ -155,6 +155,7 @@ function setBottleRotation(bottle,angle){
   bottle.dataset.face=Math.cos(radians)<0?'back':'front';
   bottle.style.setProperty('--turn-width',width.toFixed(3));
   bottle.style.setProperty('--turn-edge',Math.abs(Math.sin(radians)).toFixed(3));
+  bottle.style.setProperty('--turn-shine-opacity',(1-Math.abs(Math.sin(radians))*.52).toFixed(3));
   bottle.style.setProperty('--turn-label-opacity',labelOpacity.toFixed(3));
 }
 let bottleDrag=null;
