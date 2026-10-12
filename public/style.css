@@ -426,7 +426,7 @@ html{scroll-padding-top:0}
 .story-cap{border-radius:50% / 14%;background:linear-gradient(90deg,#34372d,#9b9a88 45%,#36382e)}
 .story-glass{border-radius:50% / 8%;background:linear-gradient(90deg,#6b6b5b,#b5b19d 20%,#ede7d5 42%,#d0c8af 68%,#666656);box-shadow:inset 8px 0 12px rgba(255,255,255,.2),inset -10px 0 14px rgba(46,47,38,.22),0 18px 25px rgba(46,47,38,.2)}
 .spin-hint{position:absolute;z-index:4;left:50%;bottom:12px;transform:translateX(-50%);display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border:1px solid rgba(122,119,100,.24);border-radius:99px;background:rgba(255,254,250,.86);color:#666b58;font-size:7px;font-weight:700;letter-spacing:.12em;white-space:nowrap;pointer-events:none;backdrop-filter:blur(6px)}
-.detail-edition:before{content:"↔ DRAG TO ROTATE · ";font-weight:700;color:#626a51}
+.detail-edition:before{content:"↔ DRAG OR USE ← → KEYS · ";font-weight:700;color:#626a51}
 
 
 /* TURNABLE PLACEHOLDER BOTTLE — avoid mirrored text and the flat-card flip effect. */
