@@ -11,6 +11,7 @@ Target: `create` branch only. `main` was not changed.
 - Replaced a CSS `calc()` multiplication expression with a JavaScript-computed opacity value for broader browser compatibility.
 - Added Negros Island Region (NIR) to the server-side Philippine shipping region map so checkout accepts this officially established region.
 - Fixed keyboard rotation: focus normally lands on the product link surrounding the bottle, not the decorative bottle div. Left/right arrow keys now find and rotate the bottle inside the focused link.
+- Prevented a product shelf from also scrolling when arrow keys are being used to rotate the focused bottle; arrow keys continue to scroll shelves when focus is elsewhere.
 - Kept horizontal pointer dragging, pointer cancellation cleanup, click suppression after a drag, and vertical page scrolling on touch screens.
 - Updated CSS/JS cache version so clients request the changed interaction.
 - Preserved test-order statuses `NOT_COLLECTED` and `TEST_ORDER`; this storefront still does not collect real payment.
