@@ -32,6 +32,7 @@ export const REGION_ZONE = Object.freeze({
   'Western Visayas': 'Visayas',
   'Central Visayas': 'Visayas',
   'Eastern Visayas': 'Visayas',
+  'Negros Island Region': 'Visayas',
   'Zamboanga Peninsula': 'Mindanao',
   'Northern Mindanao': 'Mindanao',
   'Davao Region': 'Mindanao',
