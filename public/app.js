@@ -20,7 +20,7 @@ const P=[
   ['elan','ELAN','women','Clean sophistication with effortless character.',['Clean','Sophisticated','Elegant']]
 ].map((x,i)=>({productId:x[0],id:i,name:x[1],gender:x[2],desc:x[3],tags:x[4]}));
 const REGION_ZONE={
-  'National Capital Region':'NCR','Cordillera Administrative Region':'Luzon','Ilocos Region':'Luzon','Cagayan Valley':'Luzon','Central Luzon':'Luzon','CALABARZON':'Luzon','MIMAROPA':'Luzon','Bicol Region':'Luzon','Western Visayas':'Visayas','Central Visayas':'Visayas','Eastern Visayas':'Visayas','Zamboanga Peninsula':'Mindanao','Northern Mindanao':'Mindanao','Davao Region':'Mindanao','SOCCSKSARGEN':'Mindanao','Caraga':'Mindanao','Bangsamoro Autonomous Region in Muslim Mindanao':'Mindanao'
+  'National Capital Region':'NCR','Cordillera Administrative Region':'Luzon','Ilocos Region':'Luzon','Cagayan Valley':'Luzon','Central Luzon':'Luzon','CALABARZON':'Luzon','MIMAROPA':'Luzon','Bicol Region':'Luzon','Western Visayas':'Visayas','Central Visayas':'Visayas','Eastern Visayas':'Visayas','Negros Island Region':'Visayas','Zamboanga Peninsula':'Mindanao','Northern Mindanao':'Mindanao','Davao Region':'Mindanao','SOCCSKSARGEN':'Mindanao','Caraga':'Mindanao','Bangsamoro Autonomous Region in Muslim Mindanao':'Mindanao'
 };
 const RATES={JNT:{NCR:85,Luzon:100,Visayas:135,Mindanao:155},LBC:{NCR:95,Luzon:110,Visayas:145,Mindanao:165}};
 const Q=[
