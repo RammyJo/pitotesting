@@ -427,3 +427,38 @@ html{scroll-padding-top:0}
 .story-glass{border-radius:50% / 8%;background:linear-gradient(90deg,#6b6b5b,#b5b19d 20%,#ede7d5 42%,#d0c8af 68%,#666656);box-shadow:inset 8px 0 12px rgba(255,255,255,.2),inset -10px 0 14px rgba(46,47,38,.22),0 18px 25px rgba(46,47,38,.2)}
 .spin-hint{position:absolute;z-index:4;left:50%;bottom:12px;transform:translateX(-50%);display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border:1px solid rgba(122,119,100,.24);border-radius:99px;background:rgba(255,254,250,.86);color:#666b58;font-size:7px;font-weight:700;letter-spacing:.12em;white-space:nowrap;pointer-events:none;backdrop-filter:blur(6px)}
 .detail-edition:before{content:"↔ DRAG TO ROTATE · ";font-weight:700;color:#626a51}
+
+
+/* TURNABLE PLACEHOLDER BOTTLE — avoid mirrored text and the flat-card flip effect. */
+.bottle{
+  transform:scaleX(var(--turn-width,1)) scale(var(--bscale,1));
+  transform-style:flat;
+  backface-visibility:visible;
+  transition:transform .12s ease-out;
+  will-change:transform;
+}
+.bottle:before{
+  opacity:calc(1 - var(--turn-edge,0) * .52);
+}
+.bottle .label{
+  opacity:var(--turn-label-opacity,1);
+  transform:scaleX(1);
+  transition:opacity .08s linear;
+}
+.bottle[data-face="back"] .label{
+  transform:scaleX(-1);
+}
+.card:hover .bottle{
+  transform:translateY(-4px) scaleX(var(--turn-width,1)) rotateZ(1deg) scale(var(--bscale,1));
+}
+.detail-visual .bottle,
+.detail-visual .bottle:hover{
+  transform:scaleX(var(--turn-width,1)) scale(1.65);
+}
+@media(max-width:780px){
+  .detail-visual .bottle,
+  .detail-visual .bottle:hover{transform:scaleX(var(--turn-width,1)) scale(1.45)}
+}
+@media(prefers-reduced-motion:reduce){
+  .bottle,.card:hover .bottle,.detail-visual .bottle{transition:none!important;animation:none!important}
+}
