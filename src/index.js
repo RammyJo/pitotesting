@@ -90,6 +90,10 @@ export default {
         return json({ products: PRODUCTS, sizes: SIZES, regionZone: REGION_ZONE, rates: RATES, packagingWeight: PACKAGING_WEIGHT, testMode: true });
       }
 
+      if (path.startsWith('/api/account/')) {
+        return json({ error: 'Seven Privé is back in the storefront, but customer accounts are not connected in this Worker yet. The secure D1 membership database and account endpoints must be enabled before registration or sign-in can work.' }, 503);
+      }
+
       if (path === '/api/orders' && request.method === 'GET') {
         if (rateLimited(adminWindow, clientIp(request), 8)) return json({ error: 'Too many admin attempts. Please wait a moment.' }, 429);
         if (!adminAuthorized(request, env)) return json({ error: env.ADMIN_TOKEN ? 'Unauthorized.' : 'Admin access is not configured.' }, env.ADMIN_TOKEN ? 401 : 503);
