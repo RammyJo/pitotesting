@@ -1,17 +1,14 @@
-# Production Notes
+# Production blockers before real sales
 
-Before going live:
-
-1. Replace the editorial bottle placeholders with the CEO's real product photography.
-2. Keep the current product data, size variants, cart, checkout and order model.
-3. Replace assumed J&T/LBC shipping rates with verified merchant/API rates.
-4. Replace local test payment with a server-side PayMongo integration.
-5. Store orders in a hosted database such as Supabase instead of local `data/orders.json`.
-6. Add payment webhooks so paid/unpaid state is server-confirmed.
-7. Add shipment/tracking integration after courier credentials are available.
-8. Deploy the frontend and backend to production hosting rather than localhost.
-9. Keep secrets out of GitHub/browser code.
-
-## Design placeholder strategy
-
-The current product visuals are intentionally generated in CSS/HTML. They are not being presented as real photographs. When real product assets arrive, replace only the visual layer and preserve the commerce logic.
+1. Replace the in-memory test order store with durable database storage.
+2. Keep `ADMIN_TOKEN` server-side; use Cloudflare Access or equivalent for production admin access.
+3. Connect PayMongo using server-side secrets only. Never place live keys in GitHub or browser code.
+4. Mark orders PAID only from a verified PayMongo webhook, not from the browser.
+5. Replace the assumed LBC/J&T rates with verified merchant/API rates.
+6. Add stock/inventory enforcement on the server.
+7. Add order idempotency to protect against duplicate submissions.
+8. Add real shipping/tracking integration after courier credentials are available.
+9. Publish Terms, Privacy, Refund/Return, Shipping, and Contact pages before production.
+10. Replace editorial bottle placeholders with approved Seven Perfume photography.
+11. Move the production project into a Seven Perfume-owned GitHub/Cloudflare/PayMongo account structure, with developer access granted to the designer.
+12. Perform a final security review and payment test before switching from TEST to LIVE.

@@ -1,33 +1,60 @@
-# Seven Perfume V9.3
+# Seven Perfume — Storefront test project
 
-This is the cleaned project package for the Seven Perfume test storefront. It continues the existing V8/V9 project and does not include old version ZIPs.
+This repository's **root project** is the Cloudflare Worker storefront. The nested `seven-perfume-commerce/` folder is a separate prototype and is not the deployment target.
 
-## V9.3 changes
-- Switched display typography to heavier Manrope sans-serif for readability on the ivory/white design.
-- Added one consistent, delegated navigation handler so page links and CTAs route in the same tab. Browser back/forward is supported.
-- Product image click opens an in-page gallery with three temporary views and a fast zoom transition. Replace the placeholder bottle renderings with official product photos when available.
-- “VIEW DETAILS” opens the selected fragrance's detailed product page in the same tab. The product name is no longer a second navigation button.
-- Favorites toggle in place without rebuilding the product grid.
-- Add to Cart keeps the shopper's page position stable while opening the cart drawer.
-- Cart bottle thumbnails are contained in fixed-size boxes so they cannot overlap cart text or neighboring rows.
-- View Details now uses the same centralized route handler as the other navigation controls and the destination renders immediately before the page-entry animation.
-- Instagram and Facebook icons are included in every standard page footer and link to the official URLs supplied for Seven Perfume.
+## Run the root project locally
 
-## Run locally (Windows)
-1. Install Node.js LTS if needed.
-2. Double-click `run.bat`.
-3. Open the local URL printed by the terminal.
+1. Install Node.js (LTS).
+2. In the repository root, run `npm install`.
+3. Start the local Node test server with `npm start`.
+4. Open `http://localhost:4173`.
 
-## Cloudflare deployment
-- Worker name: `pitotesting` (`wrangler.jsonc`).
-- From this project folder, run `npm install`, authenticate with `npx wrangler login`, and deploy with `npx wrangler deploy`.
-- Membership registration requires a real Cloudflare D1 database binding named `DB` and the schema in `migrations/0001_v9_membership.sql`. See `DEPLOYMENT.md`.
+The local server stores **test orders** in `data/orders.json`. It does not process payments. To enable the local test-admin API, set an `ADMIN_TOKEN` environment variable before starting the server. Do not use a real production secret in test environments.
 
-## Demo limitations
-- This remains a test-mode order flow. No real money is charged.
-- Shipping rates are placeholders; no LBC/J&T API is connected.
-- PayMongo and verified payment webhooks are not connected.
-- Seven Privé account registration requires the real D1 binding.
-- Configure `ADMIN_TOKEN` as a secret; never put production credentials in frontend files or commit them.
-- Catalog data, scent descriptions, and the temporary gallery visuals should be confirmed/replaced with official brand assets before launch.
-- Visual browser testing could not be completed in this environment; verify the package on a real browser/phone after local run or deployment.
+For the Cloudflare Worker development preview, run `npm run dev`. To deploy, use `npm run deploy` only after confirming the intended Cloudflare account, project, environment variables, and release branch.
+
+## Current storefront features
+
+- Page-based routes for Home, Shop, fragrance details, Saved Fragrances, Scent Finder, Our Story, Cart, Checkout, and test confirmation.
+- Product size selection, quantity controls, favourites, cart persistence, search, and horizontal product shelves.
+- CSS-generated placeholder bottle illustrations with a stylized drag/arrow-key turntable effect.
+- Checkout validates customer fields and recalculates product prices and estimated shipping on the server.
+- Test admin page at `/admin.html`; order API requires a configured admin token.
+- Philippine region-based demo shipping estimates for J&T and LBC.
+
+## Important limitations
+
+- **Test mode only.** No PayMongo payment is collected or confirmed. Orders use `NOT_COLLECTED` and `TEST_ORDER` statuses.
+- Cloudflare Worker orders are held in isolate memory and are not durable. Do not use the Worker order API for real sales until a persistent database is implemented.
+- J&T/LBC fees are assumed estimates, not live courier quotes, bookings, or tracking.
+- The turntable is a stylized placeholder, not a true 360-degree render or photograph of the real bottle.
+- Product descriptions and notes are editorial placeholders pending approved brand copy and photography.
+- The client and server currently maintain separate catalog definitions; server-side prices remain authoritative for order totals.
+
+## Main files
+
+- `public/index.html`, `public/style.css`, `public/app.js` — storefront UI
+- `public/admin.html`, `public/admin.js` — test admin UI
+- `server.js` — local Node test server
+- `src/index.js` — Cloudflare Worker API and asset handler
+- `src/catalog.js`, `src/order.js` — authoritative server catalog, shipping assumptions, and order validation
+- `data/orders.json` — local test-order storage
+- `wrangler.jsonc`, `package.json` — Cloudflare configuration and scripts
+- `QA-AUDIT-ROTATION-AND-RELEASE.md`, `SECURITY-AUDIT.md`, `PRODUCTION.md` — audits and launch blockers
+
+## Useful routes
+
+- `#/home`
+- `#/shop?gender=all`
+- `#/shop?gender=men`
+- `#/shop?gender=women`
+- `#/product/omega`, `#/product/exodus-noir`, `#/product/solace`
+- `#/favorites`
+- `#/finder`
+- `#/about`
+- `#/cart`
+- `#/checkout`
+
+## Before merging or launching
+
+Review the full `create` versus `main` diff. Add automated order/API tests, verify admin authentication, persist Worker orders in D1 or another database, integrate and verify payment webhooks, confirm courier rates, publish customer policies, and test the deployed site in a real browser.

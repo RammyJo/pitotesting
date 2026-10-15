@@ -1,22 +1,35 @@
 # Seven Perfume — Cloudflare setup
 
-This version is Cloudflare Workers-ready.
+## Deployment target
 
-## What it does now
-- Serves the existing `public/` storefront through Cloudflare static assets.
-- Handles `/api/orders` through a Cloudflare Worker.
-- Keeps test orders in worker memory for the CEO demo.
-- Keeps the existing local `server.js` so the same project still runs locally.
+The deployable Worker project is at the **repository root**:
+- wrangler.jsonc
+- package.json
+- src/index.js
+- public/
 
-## Important
-This backend is TEST MODE only. In-memory orders can disappear when the Worker is restarted or evicted. Do not use this for real customer orders.
+Do not set Cloudflare's root directory to seven-perfume-commerce; that is a separate nested prototype, not the current root storefront.
 
-Before production we will replace the in-memory order store with Cloudflare D1 or another production database and add proper admin authentication.
+## Local preview
 
-## Cloudflare dashboard values
-Repository: `pitotesting`
-Root directory: `seven-perfume-commerce`
-Build command: leave blank
-Deploy command: `npx wrangler deploy`
+1. Install Node.js LTS.
+2. From the repository root, run npm install.
+3. Run npm run dev for a Wrangler development preview, or npm start for the local Node test server.
+4. Test checkout and admin behavior using synthetic data only.
 
-If Cloudflare asks for a root directory, use `seven-perfume-commerce` because `wrangler.jsonc`, `package.json`, `src`, and `public` live there.
+## Admin secret
+
+Set a strong Worker secret named ADMIN_TOKEN in the correct Cloudflare account. Never commit it, put it in browser JavaScript, or print it to logs. The local Node server's admin API is disabled until ADMIN_TOKEN is set in its environment.
+
+## Before deployment
+
+npm run deploy deploys the Worker named pitotesting configured in wrangler.jsonc. This can affect the live Worker. Confirm the Cloudflare account and intended branch before running it. A GitHub branch or PR does not automatically deploy.
+
+## Test-mode limitations
+
+- Worker orders are stored in isolate memory and can disappear; they are not production order records.
+- No PayMongo payment is collected or verified.
+- J&T/LBC rates are assumptions, not live courier quotes.
+- The CSS bottle turntable is illustrative, not true 360-degree product photography.
+
+Before real sales, add durable D1 (or equivalent) order storage, verified payment webhooks, production admin access controls, verified courier rates/tracking, inventory enforcement, idempotency, and customer policies.

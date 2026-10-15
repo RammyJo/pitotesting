@@ -88,9 +88,8 @@ const server = http.createServer(async (req, res) => {
 
     if (url.pathname.startsWith('/api/')) {
       if (!sameOrigin(req)) return sendJson(res, 403, { error: 'Cross-origin request denied.' });
-      if (url.pathname === '/api/health' && req.method === 'GET') return sendJson(res, 200, { ok: true, mode: 'TEST', service: 'pitotesting' });
+      if (url.pathname === '/api/health' && req.method === 'GET') return sendJson(res, 200, { ok: true, mode: 'TEST', service: 'seven-perfume' });
       if (url.pathname === '/api/catalog' && req.method === 'GET') return sendJson(res, 200, { products: PRODUCTS, sizes: SIZES, regionZone: REGION_ZONE, rates: RATES, packagingWeight: PACKAGING_WEIGHT, testMode: true });
-      if (url.pathname.startsWith('/api/account/')) return sendJson(res, 503, { error: 'Member accounts need the Cloudflare D1 binding. Follow V9-IMPLEMENTATION.md and use Wrangler to test account registration.' });
 
       if (url.pathname === '/api/orders' && req.method === 'GET') {
         if (rateLimited(adminWindow, ip, 8)) return sendJson(res, 429, { error: 'Too many admin attempts. Please wait a moment.' });
@@ -110,7 +109,7 @@ const server = http.createServer(async (req, res) => {
         catch (e) { return sendJson(res, e.message === 'REQUEST_TOO_LARGE' ? 413 : 400, { error: e.message === 'REQUEST_TOO_LARGE' ? 'Request too large.' : 'Invalid JSON.' }); }
         const result = buildOrder(body);
         if (!result.ok) return sendJson(res, 400, { error: result.error });
-        const order = { id: `SP-${randomUUID().replaceAll('-', '').slice(0, 10).toUpperCase()}`, createdAt: new Date().toISOString(), paymentStatus: 'TEST_PAID', orderStatus: 'PROCESSING', ...result.order, mode: 'TEST' };
+        const order = { id: `SP-${randomUUID().replaceAll('-', '').slice(0, 10).toUpperCase()}`, createdAt: new Date().toISOString(), paymentStatus: 'NOT_COLLECTED', orderStatus: 'TEST_ORDER', ...result.order, mode: 'TEST' };
         const orders = await readOrders(); orders.push(order); await saveOrders(orders);
         return sendJson(res, 201, { order, testMode: true });
       }
@@ -135,5 +134,5 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, () => {
   console.log(`Seven Perfume test server: http://localhost:${PORT}`);
-  console.log(ADMIN_TOKEN ? `Test admin token: ${ADMIN_TOKEN}` : 'ADMIN_TOKEN is not set. Admin API is disabled.');
+  console.log(ADMIN_TOKEN ? 'Admin API is enabled (token configured).' : 'ADMIN_TOKEN is not set. Admin API is disabled.');
 });
