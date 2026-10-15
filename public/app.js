@@ -232,3 +232,33 @@ document.addEventListener('keydown',event=>{
 });
 
 cartSync(false);loadVIPMember().finally(()=>{if(currentRoute().path==='/vip')renderRoute(true)});renderRoute(false);
+
+
+/* First visit only: a short, cinematic Seven Perfume signature reveal. */
+(function initBrandIntro(){
+  const intro=document.getElementById('brandIntro');
+  if(!intro)return;
+  const skip=document.getElementById('introSkip');
+  let alreadySeen=false;
+  try{alreadySeen=localStorage.getItem('seven-intro-seen-v1')==='1'}catch{}
+  if(alreadySeen){intro.remove();return}
+  try{localStorage.setItem('seven-intro-seen-v1','1')}catch{}
+  intro.setAttribute('aria-hidden','false');
+  intro.classList.add('is-playing');
+  const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let dismissed=false;
+  let timer;
+  function dismiss(){
+    if(dismissed)return;
+    dismissed=true;
+    clearTimeout(timer);
+    intro.classList.add('is-leaving');
+    intro.classList.remove('is-playing');
+    window.setTimeout(()=>intro.remove(),reduced?50:1000);
+  }
+  if(skip)skip.addEventListener('click',dismiss,{once:true});
+  timer=window.setTimeout(dismiss,reduced?700:4100);
+  document.addEventListener('keydown',function onIntroKey(event){
+    if(!dismissed&&event.key==='Escape'){dismiss();document.removeEventListener('keydown',onIntroKey)}
+  });
+})();
